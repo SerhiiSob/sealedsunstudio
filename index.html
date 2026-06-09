@@ -3,419 +3,285 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- ═══════════════════════════════════════════════
+       НАЗВА ВКЛАДКИ БРАУЗЕРА
+       Змінити текст між тегами <title>...</title>
+  ════════════════════════════════════════════════ -->
   <title>Lost Blue Studio — Designer Lighting</title>
+
+  <!-- ═══════════════════════════════════════════════
+       ІКОНКА ВКЛАДКИ (favicon)
+       1. Завантаж логотип у папку images/ на GitHub
+       2. Заміни "images/logo.png" на свій файл
+       Підтримуються: .png, .ico, .svg
+  ════════════════════════════════════════════════ -->
+  <!-- <link rel="icon" type="image/png" href="images/logo.png"> -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --ink: #0e0e0e;
-      --cream: #f4f0ea;
-      --blue: #1a3a5c;
-      --blue-mid: #2d5986;
-      --blue-light: #b8cfe0;
-      --gold: #c8a96e;
-      --muted: #8a8070;
-      --border: rgba(26,58,92,0.15);
+      --ink: #0e0e0e; --cream: #f4f0ea; --blue: #1a3a5c;
+      --blue-light: #b8cfe0; --gold: #c8a96e;
+      --muted: #8a8070; --border: rgba(26,58,92,0.15);
     }
-
     html { scroll-behavior: smooth; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
 
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: var(--cream);
-      color: var(--ink);
-      overflow-x: hidden;
-    }
-
-    /* ─── LANG SWITCHER ─── */
-    .lang-switcher { display: flex; align-items: center; gap: 0.2rem; }
-
+    /* ── LANG ── */
+    .lang-switcher { display:flex; align-items:center; gap:.2rem; }
     .lang-btn {
-      background: none; border: none; cursor: pointer;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.62rem; font-weight: 500;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      color: rgba(244,240,234,0.45);
-      padding: 0.3rem 0.5rem; transition: color 0.2s;
+      background:none; border:none; cursor:pointer; font-family:'Montserrat',sans-serif;
+      font-size:.62rem; font-weight:500; letter-spacing:.15em; text-transform:uppercase;
+      color:rgba(244,240,234,.45); padding:.3rem .5rem; transition:color .2s;
     }
-    .lang-btn.active { color: var(--gold); }
-    .lang-btn:hover  { color: rgba(244,240,234,0.85); }
-    .lang-sep { font-size: 0.55rem; color: rgba(244,240,234,0.2); }
+    .lang-btn.active { color:var(--gold); }
+    .lang-btn:hover  { color:rgba(244,240,234,.85); }
+    .lang-sep { font-size:.55rem; color:rgba(244,240,234,.2); }
 
-    /* ─── HERO ─── */
-    .hero {
-      position: relative; height: 100vh; min-height: 600px;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      overflow: hidden; background: var(--blue);
-    }
-
-    .hero-bg {
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% 110%, #2d5986 0%, transparent 70%),
-        radial-gradient(ellipse 40% 40% at 80% 20%, rgba(200,169,110,0.12) 0%, transparent 60%),
-        linear-gradient(160deg, #0a1f35 0%, #1a3a5c 50%, #0d2440 100%);
-    }
-
-    .hero-noise {
-      position: absolute; inset: 0; opacity: 0.04;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-size: 200px;
-    }
-
-    /* Light glow in hero — atmospheric */
-    .hero-glow {
-      position: absolute;
-      width: 300px; height: 300px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(200,169,110,0.15) 0%, transparent 70%);
-      top: 20%; left: 50%; transform: translateX(-50%);
-      animation: glowpulse 4s ease-in-out infinite;
-    }
-    @keyframes glowpulse {
-      0%,100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
-      50%      { opacity: 1;   transform: translateX(-50%) scale(1.15); }
-    }
-
-    .hero-line { position: absolute; background: rgba(200,169,110,0.2); }
-    .hero-line-h  { width:60%; height:1px; top:30%; left:20%;  animation: fadein 2s ease forwards; }
-    .hero-line-h2 { width:40%; height:1px; bottom:28%; right:10%; animation: fadein 2.4s ease forwards; }
-    .hero-line-v  { width:1px; height:40%; top:15%; left:12%; animation: fadein 2.8s ease forwards; }
-
-    @keyframes fadein  { from{opacity:0} to{opacity:1} }
-    @keyframes slideup { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
-
-    .hero-content {
-      position: relative; text-align: center; color: var(--cream);
-      animation: slideup 1.2s cubic-bezier(0.16,1,0.3,1) forwards;
-    }
-
-    .hero-eyebrow {
-      font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 1.6rem; opacity: 0.9;
-    }
-
-    .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.5rem,9vw,8.5rem);
-      font-weight: 300; letter-spacing: 0.04em; line-height: 0.92; color: #f4f0ea;
-    }
-    .hero-title em { font-style: italic; color: var(--blue-light); }
-
-    .hero-sub {
-      font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
-      color: rgba(244,240,234,0.45); margin-top: 1.8rem;
-    }
-
-    .hero-scroll {
-      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-      color: rgba(244,240,234,0.35); font-size: 0.6rem;
-      letter-spacing: 0.25em; text-transform: uppercase;
-      animation: fadein 3s ease forwards;
-    }
-    .hero-scroll-line {
-      width:1px; height:40px;
-      background: linear-gradient(to bottom, rgba(200,169,110,0.5), transparent);
-      animation: scrollpulse 2s ease-in-out infinite;
-    }
-    @keyframes scrollpulse {
-      0%,100%{opacity:.4;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(1.2)}
-    }
-
-    /* ─── NAV ─── */
+    /* ── NAV ── */
     nav {
-      position: fixed; top:0; left:0; right:0; z-index:100;
+      position:fixed; top:0; left:0; right:0; z-index:200;
       display:flex; align-items:center; justify-content:space-between;
-      padding: 1.4rem 3rem;
-      background: transparent;
-      transition: background 0.4s, backdrop-filter 0.4s;
+      padding:1.4rem 3rem; background:transparent;
+      transition:background .4s, backdrop-filter .4s;
     }
-    nav.scrolled { background: rgba(10,31,53,0.92); backdrop-filter: blur(12px); }
-
+    nav.scrolled { background:rgba(10,31,53,.92); backdrop-filter:blur(12px); }
     .nav-logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem; font-weight: 400;
-      color: var(--cream); letter-spacing: 0.06em; text-decoration: none; white-space: nowrap;
+      font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:400;
+      color:var(--cream); letter-spacing:.06em; text-decoration:none; white-space:nowrap;
+      display:flex; align-items:center; gap:.8rem;
     }
-    .nav-logo span { color: var(--gold); }
+    .nav-logo span { color:var(--gold); }
+
+    /* ═══════════════════════════════════════════════
+       ЛОГОТИП У НАВБАРІ
+       Розкоментуй блок нижче і вкажи шлях до логотипу.
+       height:36px — висота логотипу, змінюй за потребою.
+    ════════════════════════════════════════════════ */
+    .nav-logo-img { height:36px; width:auto; display:block; }
+    /* Якщо лого є — текст ховається автоматично через JS */
 
     .nav-right { display:flex; align-items:center; gap:2.5rem; }
-
     .nav-links { display:flex; gap:2.5rem; list-style:none; }
     .nav-links a {
-      font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase;
-      color:rgba(244,240,234,0.6); text-decoration:none; transition:color 0.2s;
+      font-size:.65rem; letter-spacing:.2em; text-transform:uppercase;
+      color:rgba(244,240,234,.6); text-decoration:none; transition:color .2s;
     }
     .nav-links a:hover { color:var(--gold); }
 
-    /* ─── SECTIONS ─── */
-    section { padding:6rem 2rem; max-width:1200px; margin:0 auto; }
+    /* ── HERO ── */
+    .hero {
+      position:relative; height:100vh; min-height:600px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      overflow:hidden; background:var(--blue);
+    }
 
-    .section-label {
-      font-size:0.6rem; letter-spacing:0.35em; text-transform:uppercase;
-      color:var(--gold); margin-bottom:0.8rem;
+    /* Фонове зображення hero (якщо задано) */
+    .hero-bg-img {
+      position:absolute; inset:0; width:100%; height:100%;
+      object-fit:cover; object-position:center;
+      opacity:.35;
     }
-    .section-title {
+
+    .hero-bg {
+      position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 110%, #2d5986 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 20%, rgba(200,169,110,.12) 0%, transparent 60%),
+        linear-gradient(160deg, #0a1f35 0%, #1a3a5c 50%, #0d2440 100%);
+    }
+    .hero-noise {
+      position:absolute; inset:0; opacity:.04;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:200px;
+    }
+    .hero-glow {
+      position:absolute; width:300px; height:300px; border-radius:50%;
+      background:radial-gradient(circle, rgba(200,169,110,.15) 0%, transparent 70%);
+      top:20%; left:50%; transform:translateX(-50%);
+      animation:glowpulse 4s ease-in-out infinite;
+    }
+    @keyframes glowpulse {
+      0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}
+      50%{opacity:1;transform:translateX(-50%) scale(1.15)}
+    }
+    .hero-line { position:absolute; background:rgba(200,169,110,.2); }
+    .hero-line-h  { width:60%; height:1px; top:30%;    left:20%;  animation:fadein 2s  ease forwards; }
+    .hero-line-h2 { width:40%; height:1px; bottom:28%; right:10%; animation:fadein 2.4s ease forwards; }
+    .hero-line-v  { width:1px; height:40%; top:15%;    left:12%;  animation:fadein 2.8s ease forwards; }
+    @keyframes fadein  { from{opacity:0}to{opacity:1} }
+    @keyframes slideup { from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)} }
+
+    .hero-content {
+      position:relative; text-align:center; color:var(--cream);
+      animation:slideup 1.2s cubic-bezier(.16,1,.3,1) forwards;
+    }
+
+    /* ═══════════════════════════════════════════════
+       ЛОГОТИП У HERO (великий, по центру)
+       Розкоментуй .hero-logo-img і вкажи шлях
+    ════════════════════════════════════════════════ */
+    .hero-logo-img { height:80px; width:auto; margin-bottom:2rem; display:none; }
+
+    .hero-eyebrow {
+      font-size:.65rem; letter-spacing:.35em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:1.6rem; opacity:.9;
+    }
+    .hero-title {
       font-family:'Cormorant Garamond',serif;
-      font-size:clamp(2.2rem,5vw,3.8rem);
-      font-weight:300; color:var(--blue); line-height:1.1;
+      font-size:clamp(3.5rem,9vw,8.5rem); font-weight:300;
+      letter-spacing:.04em; line-height:.92; color:#f4f0ea;
     }
+    .hero-title em { font-style:italic; color:var(--blue-light); }
+    .hero-sub {
+      font-size:.7rem; letter-spacing:.3em; text-transform:uppercase;
+      color:rgba(244,240,234,.45); margin-top:1.8rem;
+    }
+    .hero-scroll {
+      position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:.5rem;
+      color:rgba(244,240,234,.35); font-size:.6rem;
+      letter-spacing:.25em; text-transform:uppercase; animation:fadein 3s ease forwards;
+    }
+    .hero-scroll-line {
+      width:1px; height:40px;
+      background:linear-gradient(to bottom, rgba(200,169,110,.5), transparent);
+      animation:scrollpulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollpulse { 0%,100%{opacity:.4;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)} }
+
+    /* ── SECTIONS ── */
+    section { padding:6rem 2rem; max-width:1200px; margin:0 auto; }
+    .section-label { font-size:.6rem; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); margin-bottom:.8rem; }
+    .section-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.2rem,5vw,3.8rem); font-weight:300; color:var(--blue); line-height:1.1; }
     .section-title em { font-style:italic; }
 
-    /* ─── ABOUT ─── */
-    .about-wrap {
-      display:grid; grid-template-columns:1fr 1fr;
-      gap:5rem; align-items:center;
-    }
-
-    .about-visual {
-      position:relative; aspect-ratio:3/4;
-      background:var(--blue); overflow:visible;
-    }
-    .about-visual::before {
-      content:''; position:absolute; inset:0;
-      background:linear-gradient(135deg,#1a3a5c 0%,#0a1f35 100%);
-    }
-    /* Decorative light filament shape */
+    /* ── ABOUT ── */
+    .about-wrap { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+    .about-visual { position:relative; aspect-ratio:3/4; background:var(--blue); overflow:visible; }
+    .about-visual::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,#1a3a5c 0%,#0a1f35 100%); }
     .about-visual::after {
       content:''; position:absolute; inset:0;
-      background:
-        radial-gradient(ellipse 60% 30% at 50% 35%, rgba(200,169,110,0.18) 0%, transparent 70%),
-        radial-gradient(ellipse 20% 50% at 50% 20%, rgba(200,169,110,0.08) 0%, transparent 60%);
+      background:radial-gradient(ellipse 60% 30% at 50% 35%, rgba(200,169,110,.18) 0%, transparent 70%),
+                 radial-gradient(ellipse 20% 50% at 50% 20%, rgba(200,169,110,.08) 0%, transparent 60%);
     }
-
-    .about-visual-icon {
-      position:absolute; inset:0; display:flex;
-      align-items:center; justify-content:center; z-index:1;
-    }
-    .about-visual-icon svg {
-      width:80px; height:auto; opacity:0.18;
-      stroke:var(--gold); fill:none; stroke-width:0.8;
-    }
-
-    .about-offset {
-      position:absolute; bottom:-1.5rem; right:-1.5rem;
-      width:60%; aspect-ratio:1;
-      border:1px solid var(--gold); opacity:0.3; pointer-events:none;
-    }
-
-    .about-text p {
-      font-size:0.88rem; line-height:1.9; color:#3a3530;
-      margin-bottom:1.4rem; font-weight:300;
-    }
+    .about-visual-icon { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; z-index:1; }
+    .about-visual-icon svg { width:80px; height:auto; opacity:.18; stroke:var(--gold); fill:none; stroke-width:.8; }
+    .about-offset { position:absolute; bottom:-1.5rem; right:-1.5rem; width:60%; aspect-ratio:1; border:1px solid var(--gold); opacity:.3; pointer-events:none; }
+    .about-text p { font-size:.88rem; line-height:1.9; color:#3a3530; margin-bottom:1.4rem; font-weight:300; }
     .about-text p strong { font-weight:600; color:var(--blue); }
+    .about-stats { display:flex; gap:2.5rem; margin-top:2.5rem; padding-top:2rem; border-top:1px solid var(--border); }
+    .stat-num { font-family:'Cormorant Garamond',serif; font-size:2.8rem; font-weight:300; color:var(--blue); line-height:1; }
+    .stat-label { font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:.3rem; }
 
-    .about-stats {
-      display:flex; gap:2.5rem;
-      margin-top:2.5rem; padding-top:2rem;
-      border-top:1px solid var(--border);
-    }
-    .stat-num {
-      font-family:'Cormorant Garamond',serif;
-      font-size:2.8rem; font-weight:300; color:var(--blue); line-height:1;
-    }
-    .stat-label {
-      font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase;
-      color:var(--muted); margin-top:0.3rem;
-    }
-
-    /* ─── CATEGORY FILTER ─── */
-    .filter-bar {
-      display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:2.5rem;
-    }
+    /* ── FILTER ── */
+    .products-header { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:2rem; flex-wrap:wrap; gap:1rem; }
+    .filter-bar { display:flex; gap:.6rem; flex-wrap:wrap; margin-bottom:2.5rem; }
     .filter-btn {
       background:none; border:1px solid var(--border); cursor:pointer;
-      font-family:'Montserrat',sans-serif;
-      font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase;
-      color:var(--muted); padding:0.4rem 1rem;
-      transition:all 0.2s;
+      font-family:'Montserrat',sans-serif; font-size:.6rem; letter-spacing:.2em; text-transform:uppercase;
+      color:var(--muted); padding:.4rem 1rem; transition:all .2s;
     }
-    .filter-btn.active, .filter-btn:hover {
-      border-color:var(--gold); color:var(--gold);
-      background:rgba(200,169,110,0.05);
-    }
+    .filter-btn.active, .filter-btn:hover { border-color:var(--gold); color:var(--gold); background:rgba(200,169,110,.05); }
 
-    /* ─── PRODUCTS GRID ─── */
-    .products-header {
-      display:flex; align-items:flex-end; justify-content:space-between;
-      margin-bottom:2rem; flex-wrap:wrap; gap:1rem;
-    }
-
-    .grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-      gap:1.5px; background:var(--border);
-    }
-
-    .card {
-      position:relative; background:var(--cream);
-      overflow:hidden; cursor:pointer;
-      transition:opacity 0.4s, transform 0.4s;
-    }
+    /* ── GRID ── */
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.5px; background:var(--border); }
+    .card { position:relative; background:var(--cream); overflow:hidden; cursor:pointer; }
     .card.hidden { display:none; }
 
+    /* ── CARD SLIDER ── */
     .card-img {
       aspect-ratio:3/4; overflow:hidden; position:relative;
+      background:#1a2a3a;
     }
-
-    /* Unique gradient per card simulating lit objects */
-    .card:nth-child(1) .card-img { background:linear-gradient(160deg,#1c2e40 0%,#0d1e2e 50%,#0a1520 100%); }
-    .card:nth-child(2) .card-img { background:linear-gradient(160deg,#1e2a1a 0%,#0e1a10 50%,#0a140c 100%); }
-    .card:nth-child(3) .card-img { background:linear-gradient(160deg,#261e10 0%,#1a1408 50%,#120e04 100%); }
-    .card:nth-child(4) .card-img { background:linear-gradient(160deg,#1a1c28 0%,#10121a 50%,#0c0e14 100%); }
-    .card:nth-child(5) .card-img { background:linear-gradient(160deg,#221618 0%,#160e10 50%,#100a0c 100%); }
-    .card:nth-child(6) .card-img { background:linear-gradient(160deg,#1c2430 0%,#101620 50%,#0a1018 100%); }
-
-    /* Glowing light source in each card */
-    .card-img-placeholder {
-      position:absolute; inset:0;
+    .card-slides { display:flex; height:100%; transition:transform .45s cubic-bezier(.4,0,.2,1); }
+    .card-slide {
+      min-width:100%; height:100%; position:relative; flex-shrink:0;
       display:flex; align-items:center; justify-content:center;
     }
-    .card-img-placeholder svg {
-      width:56px; height:auto;
-      stroke:rgba(200,169,110,0.55); fill:none; stroke-width:0.7;
-      filter:drop-shadow(0 0 18px rgba(200,169,110,0.4));
-      transition:transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.4s;
-    }
-    .card:hover .card-img-placeholder svg {
-      filter:drop-shadow(0 0 30px rgba(200,169,110,0.75));
-      transform:scale(1.06);
-    }
+    .card-slide img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s cubic-bezier(.16,1,.3,1); }
+    .card:hover .card-slide img { transform:scale(1.04); }
 
-    /* Warm glow bloom behind icon */
-    .card-glow {
-      position:absolute; inset:0;
-      background:radial-gradient(ellipse 60% 50% at 50% 45%, rgba(200,169,110,0.12) 0%, transparent 70%);
-      transition:opacity 0.4s;
+    /* placeholder icon (показується якщо немає фото) */
+    .card-placeholder-icon {
+      position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(160deg,#1c2e40 0%,#0d1e2e 50%,#0a1520 100%);
     }
-    .card:hover .card-glow { opacity:2; }
+    .card-placeholder-icon svg { width:56px; stroke:rgba(200,169,110,.55); fill:none; stroke-width:.7; filter:drop-shadow(0 0 18px rgba(200,169,110,.4)); }
 
-    .card-img img {
-      width:100%; height:100%; object-fit:cover; display:block;
-      transition:transform 0.6s cubic-bezier(0.16,1,0.3,1);
-    }
-    .card:hover .card-img img { transform:scale(1.04); }
-
-    .card-overlay {
-      position:absolute; inset:0;
-      background:linear-gradient(to top,rgba(10,31,53,0.75) 0%,transparent 55%);
-      opacity:0; transition:opacity 0.4s;
-    }
-    .card:hover .card-overlay { opacity:1; }
-
-    .card-num {
-      position:absolute; top:1rem; left:1rem;
-      font-size:0.6rem; letter-spacing:0.2em; color:var(--gold);
-      background:rgba(10,31,53,0.75); padding:0.25rem 0.6rem;
+    /* стрілки слайдера */
+    .slider-arrow {
+      position:absolute; top:50%; transform:translateY(-50%);
+      width:32px; height:32px; border-radius:50%;
+      background:rgba(10,31,53,.65); border:none; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      color:#f4f0ea; font-size:1rem; z-index:10;
+      opacity:0; transition:opacity .25s;
       backdrop-filter:blur(4px);
     }
+    .slider-arrow.prev { left:.6rem; }
+    .slider-arrow.next { right:.6rem; }
+    .card:hover .slider-arrow { opacity:1; }
+    .slider-arrow:hover { background:rgba(10,31,53,.9); }
 
-    .card-category-badge {
-      position:absolute; top:1rem; right:1rem;
-      font-size:0.55rem; letter-spacing:0.18em; text-transform:uppercase;
-      color:rgba(200,169,110,0.8);
-      background:rgba(10,31,53,0.65);
-      padding:0.2rem 0.6rem; backdrop-filter:blur(4px);
+    /* крапки-індикатори */
+    .slider-dots {
+      position:absolute; bottom:.7rem; left:50%; transform:translateX(-50%);
+      display:flex; gap:.4rem; z-index:10;
     }
+    .slider-dot {
+      width:5px; height:5px; border-radius:50%;
+      background:rgba(244,240,234,.4); transition:background .25s, transform .25s;
+    }
+    .slider-dot.active { background:var(--gold); transform:scale(1.3); }
+
+    .card-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(10,31,53,.75) 0%,transparent 55%); opacity:0; transition:opacity .4s; pointer-events:none; }
+    .card:hover .card-overlay { opacity:1; }
+    .card-num { position:absolute; top:1rem; left:1rem; font-size:.6rem; letter-spacing:.2em; color:var(--gold); background:rgba(10,31,53,.75); padding:.25rem .6rem; backdrop-filter:blur(4px); z-index:5; }
+    .card-category-badge { position:absolute; top:1rem; right:1rem; font-size:.55rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(200,169,110,.8); background:rgba(10,31,53,.65); padding:.2rem .6rem; backdrop-filter:blur(4px); z-index:5; }
 
     .card-body { padding:1.2rem 1.4rem 1.5rem; border-top:1px solid var(--border); }
+    .card-name { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:400; color:var(--blue); margin-bottom:.4rem; }
+    .card-desc { font-size:.72rem; line-height:1.6; color:var(--muted); font-weight:300; }
+    .card-material { display:inline-block; margin-top:.8rem; font-size:.58rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); border:1px solid rgba(200,169,110,.4); padding:.2rem .6rem; }
 
-    .card-name {
-      font-family:'Cormorant Garamond',serif;
-      font-size:1.3rem; font-weight:400; color:var(--blue); margin-bottom:0.4rem;
-    }
-    .card-desc {
-      font-size:0.72rem; line-height:1.6; color:var(--muted); font-weight:300;
-    }
-    .card-material {
-      display:inline-block; margin-top:0.8rem;
-      font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase;
-      color:var(--gold); border:1px solid rgba(200,169,110,0.4);
-      padding:0.2rem 0.6rem;
-    }
-
-    /* ─── DIVIDER ─── */
+    /* ── DIVIDER ── */
     .divider { max-width:100%; padding:0; margin:0; }
-    .divider-inner {
-      display:flex; align-items:center; justify-content:center;
-      gap:2rem; padding:4rem 3rem;
-      background:var(--blue); position:relative; overflow:hidden;
-    }
-    .divider-inner::before {
-      content:''; position:absolute; inset:0;
-      background:radial-gradient(ellipse 70% 100% at 50% 50%, rgba(45,89,134,0.5), transparent);
-    }
-    .divider-line {
-      flex:1; height:1px;
-      background:linear-gradient(to right, transparent, rgba(200,169,110,0.5), transparent);
-    }
-    .divider-text {
-      font-family:'Cormorant Garamond',serif;
-      font-size:1.1rem; font-style:italic;
-      color:rgba(244,240,234,0.5); letter-spacing:0.1em;
-      white-space:nowrap; position:relative;
-    }
+    .divider-inner { display:flex; align-items:center; justify-content:center; gap:2rem; padding:4rem 3rem; background:var(--blue); position:relative; overflow:hidden; }
+    .divider-inner::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 70% 100% at 50% 50%, rgba(45,89,134,.5), transparent); }
+    .divider-line { flex:1; height:1px; background:linear-gradient(to right, transparent, rgba(200,169,110,.5), transparent); }
+    .divider-text { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-style:italic; color:rgba(244,240,234,.5); letter-spacing:.1em; white-space:nowrap; position:relative; }
 
-    /* ─── SOLD ─── */
+    /* ── SOLD ── */
     .sold-section { background:var(--cream); }
-    .sold-label {
-      display:inline-flex; align-items:center; gap:0.6rem;
-      font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase;
-      color:var(--muted); margin-bottom:3rem;
-    }
+    .sold-label { display:inline-flex; align-items:center; gap:.6rem; font-size:.6rem; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); margin-bottom:3rem; }
     .sold-label::before { content:''; display:block; width:24px; height:1px; background:var(--muted); }
-
-    .grid-sold .card-img { filter:grayscale(100%); opacity:0.55; }
+    .grid-sold .card-img { filter:grayscale(100%); opacity:.55; }
     .grid-sold .card-name { color:var(--muted); }
-    .sold-badge {
-      position:absolute; top:1rem; right:1rem;
-      font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase;
-      color:rgba(255,255,255,0.7); background:rgba(0,0,0,0.5);
-      padding:0.2rem 0.7rem; backdrop-filter:blur(4px);
-    }
+    .sold-badge { position:absolute; top:1rem; right:1rem; font-size:.55rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.7); background:rgba(0,0,0,.5); padding:.2rem .7rem; backdrop-filter:blur(4px); z-index:5; }
 
-    /* ─── CONTACTS ─── */
+    /* ── CONTACTS ── */
     .contacts-wrap { background:var(--blue); max-width:100%; padding:0; margin:0; }
-    .contacts-inner {
-      max-width:1200px; margin:0 auto; padding:6rem 2rem;
-      display:grid; grid-template-columns:1fr 1fr;
-      gap:5rem; align-items:start;
-    }
+    .contacts-inner { max-width:1200px; margin:0 auto; padding:6rem 2rem; display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; }
     .contacts-left .section-title { color:var(--cream); }
     .contacts-left .section-label { color:var(--gold); }
-    .contacts-left p {
-      font-size:0.82rem; line-height:1.9;
-      color:rgba(244,240,234,0.55); margin-top:1.5rem; font-weight:300;
-    }
+    .contacts-left p { font-size:.82rem; line-height:1.9; color:rgba(244,240,234,.55); margin-top:1.5rem; font-weight:300; }
     .contacts-list { list-style:none; display:flex; flex-direction:column; gap:0; }
-    .contact-item {
-      display:flex; align-items:center; gap:1.5rem;
-      padding:1.4rem 0; border-bottom:1px solid rgba(244,240,234,0.08);
-      text-decoration:none; color:var(--cream); transition:color 0.2s;
-    }
+    .contact-item { display:flex; align-items:center; gap:1.5rem; padding:1.4rem 0; border-bottom:1px solid rgba(244,240,234,.08); text-decoration:none; color:var(--cream); transition:color .2s; }
     .contact-item:hover { color:var(--gold); }
-    .contact-icon {
-      width:40px; height:40px; border:1px solid rgba(200,169,110,0.3);
-      display:flex; align-items:center; justify-content:center; flex-shrink:0;
-    }
+    .contact-icon { width:40px; height:40px; border:1px solid rgba(200,169,110,.3); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .contact-icon svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:1.5; }
-    .contact-type { font-size:0.58rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); margin-bottom:0.2rem; }
-    .contact-val  { font-size:0.9rem; font-weight:300; }
+    .contact-type { font-size:.58rem; letter-spacing:.25em; text-transform:uppercase; color:var(--gold); margin-bottom:.2rem; }
+    .contact-val  { font-size:.9rem; font-weight:300; }
 
-    /* ─── FOOTER ─── */
-    footer {
-      background:#06131f; padding:2rem 3rem;
-      display:flex; align-items:center;
-      justify-content:space-between; flex-wrap:wrap; gap:1rem;
-    }
-    .footer-logo { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:rgba(244,240,234,0.3); letter-spacing:0.08em; }
-    .footer-copy { font-size:0.6rem; letter-spacing:0.15em; color:rgba(244,240,234,0.2); }
+    /* ── FOOTER ── */
+    footer { background:#06131f; padding:2rem 3rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+    .footer-logo { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:rgba(244,240,234,.3); letter-spacing:.08em; }
+    .footer-copy { font-size:.6rem; letter-spacing:.15em; color:rgba(244,240,234,.2); }
 
-    /* ─── RESPONSIVE ─── */
     @media(max-width:768px){
       nav { padding:1.2rem 1.5rem; }
       .nav-links { display:none; }
@@ -428,9 +294,23 @@
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ══════════════════════════════════════════════════════════
+     НАВБАР
+════════════════════════════════════════════════════════════ -->
 <nav id="nav">
-  <a href="#" class="nav-logo">Lost <span>Blue</span> Studio</a>
+  <a href="#" class="nav-logo" id="navLogo">
+
+    <!-- ═══════════════════════════════════════════
+         ЛОГОТИП У НАВБАРІ
+         Щоб додати логотип:
+           1. Завантаж файл у папку images/ на GitHub
+           2. Видали коментарі навколо тега <img>
+           3. Вкажи правильну назву файлу
+    ════════════════════════════════════════════ -->
+    <!-- <img class="nav-logo-img" src="images/logo.png" alt="Lost Blue Studio"> -->
+
+    Lost <span>Blue</span> Studio
+  </a>
   <div class="nav-right">
     <ul class="nav-links">
       <li><a href="#about"     data-uk="Про студію"  data-en="About">Про студію</a></li>
@@ -446,8 +326,22 @@
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- ══════════════════════════════════════════════════════════
+     HERO — БАНЕР
+════════════════════════════════════════════════════════════ -->
 <header class="hero">
+
+  <!-- ═══════════════════════════════════════════
+       ФОНОВЕ ЗОБРАЖЕННЯ HERO (на всю ширину)
+       Щоб додати фото на фон:
+         1. Завантаж файл у папку images/ на GitHub
+         2. Видали коментарі навколо тега <img>
+         3. Вкажи правильну назву файлу
+       Прозорість регулюється в CSS: opacity:.35
+       (0 = невидимо, 1 = повна яскравість)
+  ════════════════════════════════════════════ -->
+  <!-- <img class="hero-bg-img" src="images/test.jpg" alt=""> -->
+
   <div class="hero-bg"></div>
   <div class="hero-noise"></div>
   <div class="hero-glow"></div>
@@ -456,8 +350,18 @@
   <div class="hero-line hero-line-v"></div>
 
   <div class="hero-content">
+
+    <!-- ═════════════════════════════════════════
+         ВЕЛИКИЙ ЛОГОТИП У ЦЕНТРІ HERO
+         Щоб показати логотип замість тексту:
+           1. Розкоментуй тег <img> нижче
+           2. Вкажи правильну назву файлу
+           3. Текстовий заголовок сховається автоматично
+    ══════════════════════════════════════════ -->
+    <!-- <img class="hero-logo-img" id="heroLogo" src="images/logo.png" alt="Lost Blue Studio"> -->
+
     <p class="hero-eyebrow" data-uk="Дизайнерські світильники для інтер'єру" data-en="Designer lighting for interiors">Дизайнерські світильники для інтер'єру</p>
-    <h1 class="hero-title">Lost <em>Blue</em><br>Studio</h1>
+    <h1 class="hero-title" id="heroTitle">Lost <em>Blue</em><br>Studio</h1>
     <p class="hero-sub" data-uk="Світло як об'єкт мистецтва" data-en="Light as an object of art">Світло як об'єкт мистецтва</p>
   </div>
 
@@ -467,20 +371,18 @@
   </div>
 </header>
 
-<!-- ABOUT -->
+<!-- ══════════════════════════════════════════════════════════
+     ПРО СТУДІЮ
+════════════════════════════════════════════════════════════ -->
 <section id="about">
   <div class="about-wrap">
     <div class="about-visual">
       <div class="about-visual-icon">
-        <!-- Decorative bulb SVG -->
         <svg viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg">
           <circle cx="40" cy="44" r="28"/>
           <path d="M28 72 Q26 82 26 88 Q26 92 40 92 Q54 92 54 88 Q54 82 52 72"/>
-          <line x1="32" y1="92" x2="32" y2="100"/>
-          <line x1="48" y1="92" x2="48" y2="100"/>
-          <line x1="32" y1="100" x2="48" y2="100"/>
-          <line x1="40" y1="100" x2="40" y2="108"/>
-          <!-- filament -->
+          <line x1="32" y1="92" x2="32" y2="100"/><line x1="48" y1="92" x2="48" y2="100"/>
+          <line x1="32" y1="100" x2="48" y2="100"/><line x1="40" y1="100" x2="40" y2="108"/>
           <path d="M33 52 Q36 44 40 48 Q44 52 47 44" stroke-linecap="round"/>
         </svg>
       </div>
@@ -496,203 +398,329 @@
       <p data-uk="Lost Blue Studio — це перетин <strong>промислового дизайну та ремесла</strong>: метал, скло, бетон, дерево. Матеріали підбираються під характер простору, де буде жити світло." data-en="Lost Blue Studio sits at the intersection of <strong>industrial design and craft</strong>: metal, glass, concrete, wood. Materials are chosen to match the character of the space where the light will live.">Lost Blue Studio — це перетин <strong>промислового дизайну та ремесла</strong>: метал, скло, бетон, дерево. Матеріали підбираються під характер простору, де буде жити світло.</p>
       <p data-uk="Приймаю <strong>індивідуальні замовлення</strong>. Розробляю під ваш інтер'єр від ескізу до готового виробу." data-en="I accept <strong>custom orders</strong> — from sketch to finished piece, designed around your interior.">Приймаю <strong>індивідуальні замовлення</strong>. Розробляю під ваш інтер'єр від ескізу до готового виробу.</p>
       <div class="about-stats">
-        <div>
-          <div class="stat-num">1:1</div>
-          <div class="stat-label" data-uk="Кожен виріб унікальний" data-en="Every piece unique">Кожен виріб унікальний</div>
-        </div>
-        <div>
-          <div class="stat-num">4</div>
-          <div class="stat-label" data-uk="Типи монтажу" data-en="Mounting types">Типи монтажу</div>
-        </div>
-        <div>
-          <div class="stat-num">UA</div>
-          <div class="stat-label" data-uk="Зроблено в Україні" data-en="Made in Ukraine">Зроблено в Україні</div>
-        </div>
+        <div><div class="stat-num">1:1</div><div class="stat-label" data-uk="Кожен виріб унікальний" data-en="Every piece unique">Кожен виріб унікальний</div></div>
+        <div><div class="stat-num">4</div><div class="stat-label" data-uk="Типи монтажу" data-en="Mounting types">Типи монтажу</div></div>
+        <div><div class="stat-num">UA</div><div class="stat-label" data-uk="Зроблено в Україні" data-en="Made in Ukraine">Зроблено в Україні</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- AVAILABLE PRODUCTS -->
+<!-- ══════════════════════════════════════════════════════════
+     СІТКА ВИРОБІВ
+════════════════════════════════════════════════════════════ -->
 <section id="available" style="padding-top:0;">
   <div class="products-header">
     <div>
       <p class="section-label" data-uk="Доступно зараз" data-en="Available now">Доступно зараз</p>
-      <h2 class="section-title">
-        <span data-uk="Актуальні <em>роботи</em>" data-en="Current <em>works</em>">Актуальні <em>роботи</em></span>
-      </h2>
+      <h2 class="section-title"><span data-uk="Актуальні <em>роботи</em>" data-en="Current <em>works</em>">Актуальні <em>роботи</em></span></h2>
     </div>
   </div>
-
-  <!-- FILTER BAR -->
   <div class="filter-bar">
-    <button class="filter-btn active" data-filter="all"     data-uk="Усі"        data-en="All">Усі</button>
-    <button class="filter-btn"        data-filter="wall"    data-uk="Настінні"   data-en="Wall">Настінні</button>
-    <button class="filter-btn"        data-filter="table"   data-uk="Настільні"  data-en="Table">Настільні</button>
-    <button class="filter-btn"        data-filter="ceiling" data-uk="Стельові"   data-en="Ceiling">Стельові</button>
-    <button class="filter-btn"        data-filter="floor"   data-uk="Підлогові"  data-en="Floor">Підлогові</button>
+    <button class="filter-btn active" data-filter="all"     data-uk="Усі"       data-en="All">Усі</button>
+    <button class="filter-btn"        data-filter="wall"    data-uk="Настінні"  data-en="Wall">Настінні</button>
+    <button class="filter-btn"        data-filter="table"   data-uk="Настільні" data-en="Table">Настільні</button>
+    <button class="filter-btn"        data-filter="ceiling" data-uk="Стельові"  data-en="Ceiling">Стельові</button>
+    <button class="filter-btn"        data-filter="floor"   data-uk="Підлогові" data-en="Floor">Підлогові</button>
   </div>
 
   <div class="grid" id="productsGrid">
 
-    <!-- WALL -->
+    <!-- ╔══════════════════════════════════════════════════════╗
+         ║  ЯК ЧИТАТИ КАРТКУ ВИРОБУ — ПОЯСНЕННЯ               ║
+         ╠══════════════════════════════════════════════════════╣
+         ║                                                      ║
+         ║  data-category="wall"  ← категорія фільтра:         ║
+         ║    wall / table / ceiling / floor                    ║
+         ║                                                      ║
+         ║  card-num  ← номер виробу (#LB-001)                 ║
+         ║  card-name ← назва виробу                           ║
+         ║  card-desc ← опис (data-uk / data-en)               ║
+         ║  card-material ← матеріал (data-uk / data-en)       ║
+         ║                                                      ║
+         ║  Фото додаються всередині .card-slides               ║
+         ║  Кожне фото — окремий .card-slide                    ║
+         ║                                                      ║
+         ╚══════════════════════════════════════════════════════╝ -->
+
+    <!-- ════════════════════════════════════════════
+         КАРТКА #LB-001 — НАСТІННИЙ
+    ════════════════════════════════════════════ -->
     <div class="card" data-category="wall">
       <div class="card-img">
-       <img src="images/test.jpg" alt="Dome Table No.1">
-        <div class="card-glow"></div>
-        <div class="card-img-placeholder">
-           <!-- <svg viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg"> -->
-            <rect x="20" y="2" width="20" height="8" rx="1"/>
-            <line x1="30" y1="10" x2="30" y2="22"/>
-            <rect x="8" y="22" width="44" height="28" rx="2"/>
-            <path d="M8 36 Q30 50 52 36"/>
-            <line x1="18" y1="50" x2="14" y2="70"/>
-            <line x1="42" y1="50" x2="46" y2="70"/>
+
+        <!-- НОМЕР виробу — змінити тут: -->
+        <span class="card-num">#LB-001</span>
+
+        <!-- КАТЕГОРІЯ-БЕЙДЖ — змінити текст і data-uk/data-en: -->
+        <span class="card-category-badge" data-uk="Настінний" data-en="Wall">Настінний</span>
+
+        <div class="card-overlay"></div>
+
+        <!-- ══════════════════════════════════════
+             ФОТОГРАФІЇ ВИРОБУ
+             Додай скільки завгодно блоків <div class="card-slide">
+             Якщо фото одне — стрілки не з'являться
+             Якщо фото немає — показується іконка-заглушка
+
+             ШЛЯХ до файлу: images/назва-файлу.jpg
+             Твій тестовий файл: images/test.jpg
+        ══════════════════════════════════════ -->
+        <div class="card-slides">
+
+          <!-- ФОТО 1 — розкоментуй і вкажи назву файлу: -->
+          <!-- <div class="card-slide"><img src="images/test.jpg" alt="Arc Wall No.1"></div> -->
+
+          <!-- ФОТО 2 — розкоментуй щоб додати друге фото: -->
+          <!-- <div class="card-slide"><img src="images/lamp-001-b.jpg" alt="Arc Wall No.1 деталь"></div> -->
+
+          <!-- ФОТО 3 — і так далі: -->
+          <!-- <div class="card-slide"><img src="images/lamp-001-c.jpg" alt="Arc Wall No.1 монтаж"></div> -->
+
+        </div>
+        <!-- Іконка-заглушка (зникне автоматично якщо є фото) -->
+        <div class="card-placeholder-icon">
+          <svg viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="2" width="20" height="8" rx="1"/><line x1="30" y1="10" x2="30" y2="22"/>
+            <rect x="8" y="22" width="44" height="28" rx="2"/><path d="M8 36 Q30 50 52 36"/>
+            <line x1="18" y1="50" x2="14" y2="70"/><line x1="42" y1="50" x2="46" y2="70"/>
           </svg>
         </div>
-        <div class="card-overlay"></div>
-        <span class="card-num">#LB-001</span>
-        <span class="card-category-badge" data-uk="Настінний" data-en="Wall">Настінний</span>
       </div>
       <div class="card-body">
+
+        <!-- НАЗВА виробу — змінити тут: -->
         <div class="card-name">Arc Wall No.1</div>
-        <div class="card-desc" data-uk="Настінний бра з дугоподібним кронштейном, металевий плафон-конус, регульований кут нахилу. Матове чорне покриття." data-en="Wall sconce with arched bracket, metal cone shade, adjustable tilt angle. Matte black finish.">Настінний бра з дугоподібним кронштейном, металевий плафон-конус, регульований кут нахилу. Матове чорне покриття.</div>
-        <span class="card-material" data-uk="Сталь / матовий чорний" data-en="Steel / matte black">Сталь / матовий чорний</span>
+
+        <!-- ОПИС — змінити data-uk (укр) і data-en (англ): -->
+        <div class="card-desc"
+          data-uk="Настінний бра з дугоподібним кронштейном, металевий плафон-конус, регульований кут нахилу. Матове чорне покриття."
+          data-en="Wall sconce with arched bracket, metal cone shade, adjustable tilt angle. Matte black finish.">
+          Настінний бра з дугоподібним кронштейном, металевий плафон-конус, регульований кут нахилу. Матове чорне покриття.
+        </div>
+
+        <!-- МАТЕРІАЛ — змінити data-uk (укр) і data-en (англ): -->
+        <span class="card-material"
+          data-uk="Сталь / матовий чорний"
+          data-en="Steel / matte black">
+          Сталь / матовий чорний
+        </span>
+
       </div>
     </div>
+    <!-- КІНЕЦЬ картки #LB-001 -->
 
-    <!-- TABLE -->
+
+    <!-- ════════════════════════════════════════════
+         КАРТКА #LB-002 — НАСТІЛЬНИЙ
+    ════════════════════════════════════════════ -->
     <div class="card" data-category="table">
       <div class="card-img">
-        <!-- <img src="images/test.jpg" alt="Dome Table No.1">  -->
-        <div class="card-glow"></div>
-        <div class="card-img-placeholder">
-          <svg viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="30" cy="26" rx="18" ry="24"/>
-            <line x1="30" y1="50" x2="30" y2="72"/>
-            <ellipse cx="30" cy="74" rx="18" ry="4"/>
-            <line x1="22" y1="38" x2="18" y2="52"/>
-            <line x1="38" y1="38" x2="42" y2="52"/>
-          </svg>
-        </div>
-        <div class="card-overlay"></div>
         <span class="card-num">#LB-002</span>
         <span class="card-category-badge" data-uk="Настільний" data-en="Table">Настільний</span>
+        <div class="card-overlay"></div>
+        <div class="card-slides">
+          <!-- <div class="card-slide"><img src="images/lamp-002.jpg" alt="Dome Table No.1"></div> -->
+          <!-- <div class="card-slide"><img src="images/lamp-002-b.jpg" alt="Dome Table No.1 деталь"></div> -->
+        </div>
+        <div class="card-placeholder-icon">
+          <svg viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="30" cy="26" rx="18" ry="24"/><line x1="30" y1="50" x2="30" y2="72"/>
+            <ellipse cx="30" cy="74" rx="18" ry="4"/>
+          </svg>
+        </div>
       </div>
       <div class="card-body">
         <div class="card-name">Dome Table No.1</div>
-        <div class="card-desc" data-uk="Настільний світильник з плафоном-напівсферою з матового скла, основа — бетон із фактурою. Тепле дифузне світло." data-en="Table lamp with frosted glass dome shade, textured concrete base. Warm diffused light.">Настільний світильник з плафоном-напівсферою з матового скла, основа — бетон із фактурою. Тепле дифузне світло.</div>
+        <div class="card-desc"
+          data-uk="Настільний світильник з плафоном-напівсферою з матового скла, основа — бетон із фактурою. Тепле дифузне світло."
+          data-en="Table lamp with frosted glass dome shade, textured concrete base. Warm diffused light.">
+          Настільний світильник з плафоном-напівсферою з матового скла, основа — бетон із фактурою. Тепле дифузне світло.
+        </div>
         <span class="card-material" data-uk="Скло / бетон" data-en="Glass / concrete">Скло / бетон</span>
       </div>
     </div>
 
-    <!-- CEILING -->
+
+    <!-- ════════════════════════════════════════════
+         КАРТКА #LB-003 — СТЕЛЬОВИЙ
+    ════════════════════════════════════════════ -->
     <div class="card" data-category="ceiling">
       <div class="card-img">
-        <!-- <img src="images/lamp-003.jpg" alt="Halo Pendant No.1"> -->
-        <div class="card-glow"></div>
-        <div class="card-img-placeholder">
+        <span class="card-num">#LB-003</span>
+        <span class="card-category-badge" data-uk="Стельовий" data-en="Ceiling">Стельовий</span>
+        <div class="card-overlay"></div>
+        <div class="card-slides">
+          <!-- <div class="card-slide"><img src="images/lamp-003.jpg" alt="Halo Pendant No.1"></div> -->
+          <!-- <div class="card-slide"><img src="images/lamp-003-b.jpg" alt="Halo Pendant No.1 деталь"></div> -->
+        </div>
+        <div class="card-placeholder-icon">
           <svg viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg">
-            <line x1="30" y1="2" x2="30" y2="18"/>
-            <circle cx="30" cy="24" r="6"/>
+            <line x1="30" y1="2" x2="30" y2="18"/><circle cx="30" cy="24" r="6"/>
             <line x1="30" y1="30" x2="30" y2="44"/>
-            <ellipse cx="30" cy="56" rx="22" ry="12"/>
-            <ellipse cx="30" cy="54" rx="22" ry="10"/>
+            <ellipse cx="30" cy="56" rx="22" ry="12"/><ellipse cx="30" cy="54" rx="22" ry="10"/>
             <path d="M8 54 Q30 70 52 54"/>
           </svg>
         </div>
-        <div class="card-overlay"></div>
-        <span class="card-num">#LB-003</span>
-        <span class="card-category-badge" data-uk="Стельовий" data-en="Ceiling">Стельовий</span>
       </div>
       <div class="card-body">
         <div class="card-name">Halo Pendant No.1</div>
-        <div class="card-desc" data-uk="Підвісний світильник із кільцем з латуні, плафон — видуване скло опалового кольору. Підвіс на текстильному кабелі." data-en="Pendant with brass ring, opal blown glass shade. Suspended on a textile cable.">Підвісний світильник із кільцем з латуні, плафон — видуване скло опалового кольору. Підвіс на текстильному кабелі.</div>
+        <div class="card-desc"
+          data-uk="Підвісний світильник із кільцем з латуні, плафон — видуване скло опалового кольору. Підвіс на текстильному кабелі."
+          data-en="Pendant with brass ring, opal blown glass shade. Suspended on a textile cable.">
+          Підвісний світильник із кільцем з латуні, плафон — видуване скло опалового кольору. Підвіс на текстильному кабелі.
+        </div>
         <span class="card-material" data-uk="Латунь / видуване скло" data-en="Brass / blown glass">Латунь / видуване скло</span>
       </div>
     </div>
 
-    <!-- FLOOR -->
+
+    <!-- ════════════════════════════════════════════
+         КАРТКА #LB-004 — ПІДЛОГОВИЙ
+    ════════════════════════════════════════════ -->
     <div class="card" data-category="floor">
       <div class="card-img">
-        <!-- <img src="images/lamp-004.jpg" alt="Stem Floor No.1"> -->
-        <div class="card-glow"></div>
-        <div class="card-img-placeholder">
-          <svg viewBox="0 0 60 110" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="30" cy="20" rx="16" ry="18"/>
-            <line x1="30" y1="38" x2="30" y2="88"/>
-            <path d="M16 88 Q10 94 14 98 Q18 100 30 100 Q42 100 46 98 Q50 94 44 88 Z"/>
-            <line x1="18" y1="28" x2="14" y2="40"/>
-          </svg>
-        </div>
-        <div class="card-overlay"></div>
         <span class="card-num">#LB-004</span>
         <span class="card-category-badge" data-uk="Підлоговий" data-en="Floor">Підлоговий</span>
+        <div class="card-overlay"></div>
+        <div class="card-slides">
+          <!-- <div class="card-slide"><img src="images/lamp-004.jpg" alt="Stem Floor No.1"></div> -->
+          <!-- <div class="card-slide"><img src="images/lamp-004-b.jpg" alt="Stem Floor No.1 деталь"></div> -->
+        </div>
+        <div class="card-placeholder-icon">
+          <svg viewBox="0 0 60 110" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="30" cy="20" rx="16" ry="18"/><line x1="30" y1="38" x2="30" y2="88"/>
+            <path d="M16 88 Q10 94 14 98 Q18 100 30 100 Q42 100 46 98 Q50 94 44 88 Z"/>
+          </svg>
+        </div>
       </div>
       <div class="card-body">
         <div class="card-name">Stem Floor No.1</div>
-        <div class="card-desc" data-uk="Підлоговий торшер на тонкій металевій ніжці, плафон із натурального шпону. М'яке тепле розсіяне світло для читального куточка." data-en="Floor lamp on a slender metal stem, natural wood veneer shade. Soft warm diffused light, ideal for a reading corner.">Підлоговий торшер на тонкій металевій ніжці, плафон із натурального шпону. М'яке тепле розсіяне світло для читального куточка.</div>
+        <div class="card-desc"
+          data-uk="Підлоговий торшер на тонкій металевій ніжці, плафон із натурального шпону. М'яке тепле розсіяне світло для читального куточка."
+          data-en="Floor lamp on a slender metal stem, natural wood veneer shade. Soft warm diffused light, ideal for a reading corner.">
+          Підлоговий торшер на тонкій металевій ніжці, плафон із натурального шпону. М'яке тепле розсіяне світло для читального куточка.
+        </div>
         <span class="card-material" data-uk="Сталь / дерев'яний шпон" data-en="Steel / wood veneer">Сталь / дерев'яний шпон</span>
       </div>
     </div>
 
-    <!-- WALL 2 -->
+
+    <!-- ════════════════════════════════════════════
+         КАРТКА #LB-005 — НАСТІННИЙ 2
+    ════════════════════════════════════════════ -->
     <div class="card" data-category="wall">
       <div class="card-img">
-        <!-- <img src="images/lamp-005.jpg" alt="Tube Wall No.2"> -->
-        <div class="card-glow"></div>
-        <div class="card-img-placeholder">
+        <span class="card-num">#LB-005</span>
+        <span class="card-category-badge" data-uk="Настінний" data-en="Wall">Настінний</span>
+        <div class="card-overlay"></div>
+        <div class="card-slides">
+          <!-- <div class="card-slide"><img src="images/lamp-005.jpg" alt="Tube Wall No.2"></div> -->
+          <!-- <div class="card-slide"><img src="images/lamp-005-b.jpg" alt="Tube Wall No.2 деталь"></div> -->
+        </div>
+        <div class="card-placeholder-icon">
           <svg viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg">
             <rect x="24" y="2" width="12" height="30" rx="2"/>
             <rect x="16" y="32" width="28" height="20" rx="2"/>
             <path d="M16 42 Q30 54 44 42"/>
-            <line x1="20" y1="52" x2="16" y2="68"/>
-            <line x1="40" y1="52" x2="44" y2="68"/>
           </svg>
         </div>
-        <div class="card-overlay"></div>
-        <span class="card-num">#LB-005</span>
-        <span class="card-category-badge" data-uk="Настінний" data-en="Wall">Настінний</span>
       </div>
       <div class="card-body">
         <div class="card-name">Tube Wall No.2</div>
-        <div class="card-desc" data-uk="Мінімалістичний настінний бра — трубка зі сталі з відкритим торцем, пряме фокусоване світло вниз. Монтаж прихованою проводкою." data-en="Minimalist wall sconce — open-ended steel tube, direct focused downlight. Concealed wiring installation.">Мінімалістичний настінний бра — трубка зі сталі з відкритим торцем, пряме фокусоване світло вниз. Монтаж прихованою проводкою.</div>
+        <div class="card-desc"
+          data-uk="Мінімалістичний настінний бра — трубка зі сталі з відкритим торцем, пряме фокусоване світло вниз."
+          data-en="Minimalist wall sconce — open-ended steel tube, direct focused downlight.">
+          Мінімалістичний настінний бра — трубка зі сталі з відкритим торцем, пряме фокусоване світло вниз.
+        </div>
         <span class="card-material" data-uk="Сталь / натуральний метал" data-en="Steel / raw metal">Сталь / натуральний метал</span>
       </div>
     </div>
 
-    <!-- CEILING 2 -->
+
+    <!-- ════════════════════════════════════════════
+         КАРТКА #LB-006 — СТЕЛЬОВИЙ 2
+    ════════════════════════════════════════════ -->
     <div class="card" data-category="ceiling">
       <div class="card-img">
-        <!-- <img src="images/lamp-006.jpg" alt="Cluster Pendant No.2"> -->
-        <div class="card-glow"></div>
-        <div class="card-img-placeholder">
-          <svg viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg">
-            <line x1="40" y1="2" x2="40" y2="14"/>
-            <circle cx="40" cy="18" r="4"/>
-            <line x1="20" y1="18" x2="20" y2="38"/>
-            <line x1="40" y1="18" x2="40" y2="46"/>
-            <line x1="60" y1="18" x2="60" y2="32"/>
-            <circle cx="20" cy="42" r="8"/>
-            <circle cx="40" cy="50" r="8"/>
-            <circle cx="60" cy="36" r="8"/>
-          </svg>
-        </div>
-        <div class="card-overlay"></div>
         <span class="card-num">#LB-006</span>
         <span class="card-category-badge" data-uk="Стельовий" data-en="Ceiling">Стельовий</span>
+        <div class="card-overlay"></div>
+        <div class="card-slides">
+          <!-- <div class="card-slide"><img src="images/lamp-006.jpg" alt="Cluster Pendant No.2"></div> -->
+          <!-- <div class="card-slide"><img src="images/lamp-006-b.jpg" alt="Cluster Pendant No.2 деталь"></div> -->
+        </div>
+        <div class="card-placeholder-icon">
+          <svg viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg">
+            <line x1="40" y1="2" x2="40" y2="14"/><circle cx="40" cy="18" r="4"/>
+            <line x1="20" y1="18" x2="20" y2="38"/><line x1="40" y1="18" x2="40" y2="46"/><line x1="60" y1="18" x2="60" y2="32"/>
+            <circle cx="20" cy="42" r="8"/><circle cx="40" cy="50" r="8"/><circle cx="60" cy="36" r="8"/>
+          </svg>
+        </div>
       </div>
       <div class="card-body">
         <div class="card-name">Cluster Pendant No.2</div>
-        <div class="card-desc" data-uk="Кластерна підвісна група з трьох куль різної висоти — скляні сфери з філаментними лампами, латунна арматура." data-en="Cluster pendant group of three spheres at varying heights — glass globes with filament bulbs, brass fittings.">Кластерна підвісна група з трьох куль різної висоти — скляні сфери з філаментними лампами, латунна арматура.</div>
+        <div class="card-desc"
+          data-uk="Кластерна підвісна група з трьох куль різної висоти — скляні сфери з філаментними лампами, латунна арматура."
+          data-en="Cluster pendant group of three spheres at varying heights — glass globes with filament bulbs, brass fittings.">
+          Кластерна підвісна група з трьох куль різної висоти — скляні сфери з філаментними лампами, латунна арматура.
+        </div>
         <span class="card-material" data-uk="Латунь / скляні сфери" data-en="Brass / glass spheres">Латунь / скляні сфери</span>
       </div>
     </div>
 
+
+    <!-- ╔══════════════════════════════════════════════════════╗
+         ║  ЯК ДОДАТИ НОВУ КАРТКУ                              ║
+         ╠══════════════════════════════════════════════════════╣
+         ║  Скопіюй блок нижче і встав перед цим рядком.      ║
+         ║  Змінити потрібно:                                   ║
+         ║  1. data-category — категорія (wall/table/ceiling/floor)
+         ║  2. card-num      — номер (#LB-007)                  ║
+         ║  3. card-category-badge — бейдж категорії           ║
+         ║  4. src у card-slide   — шлях до фото               ║
+         ║  5. card-name          — назва                       ║
+         ║  6. card-desc data-uk/data-en — опис                ║
+         ║  7. card-material data-uk/data-en — матеріал        ║
+         ╚══════════════════════════════════════════════════════╝
+
+    <div class="card" data-category="wall">
+      <div class="card-img">
+        <span class="card-num">#LB-007</span>
+        <span class="card-category-badge" data-uk="Настінний" data-en="Wall">Настінний</span>
+        <div class="card-overlay"></div>
+        <div class="card-slides">
+          <div class="card-slide"><img src="images/lamp-007.jpg" alt="Назва виробу"></div>
+          <div class="card-slide"><img src="images/lamp-007-b.jpg" alt="Назва виробу деталь"></div>
+        </div>
+        <div class="card-placeholder-icon">
+          <svg viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="30" r="20"/>
+          </svg>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Назва виробу</div>
+        <div class="card-desc"
+          data-uk="Опис українською"
+          data-en="Description in English">
+          Опис українською
+        </div>
+        <span class="card-material"
+          data-uk="Матеріал укр"
+          data-en="Material eng">
+          Матеріал укр
+        </span>
+      </div>
+    </div>
+    -->
+
   </div>
 </section>
 
-<!-- DIVIDER -->
+<!-- ══════════════════════════════════════════════════════════
+     РОЗДІЛЮВАЧ
+════════════════════════════════════════════════════════════ -->
 <div class="divider">
   <div class="divider-inner">
     <div class="divider-line"></div>
@@ -701,25 +729,29 @@
   </div>
 </div>
 
-<!-- SOLD PRODUCTS -->
+<!-- ══════════════════════════════════════════════════════════
+     ПРОДАНІ ВИРОБИ (монохром)
+     Структура картки така сама як вище.
+     Додай клас sold-badge і прибери data-category.
+════════════════════════════════════════════════════════════ -->
 <section id="sold" class="sold-section">
   <span class="sold-label" data-uk="Архів продажів" data-en="Sales archive">Архів продажів</span>
-
   <div class="grid grid-sold">
 
     <div class="card">
       <div class="card-img">
-        <div class="card-glow"></div>
-        <div class="card-img-placeholder">
+        <span class="card-num">#LB-S01</span>
+        <span class="sold-badge">Sold</span>
+        <div class="card-overlay"></div>
+        <div class="card-slides">
+          <!-- <div class="card-slide"><img src="images/sold-001.jpg" alt="Oval Table No.1"></div> -->
+        </div>
+        <div class="card-placeholder-icon">
           <svg viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="30" cy="30" rx="20" ry="26"/>
-            <line x1="30" y1="56" x2="30" y2="74"/>
+            <ellipse cx="30" cy="30" rx="20" ry="26"/><line x1="30" y1="56" x2="30" y2="74"/>
             <ellipse cx="30" cy="76" rx="16" ry="4"/>
           </svg>
         </div>
-        <div class="card-overlay"></div>
-        <span class="card-num">#LB-S01</span>
-        <span class="sold-badge">Sold</span>
       </div>
       <div class="card-body">
         <div class="card-name">Oval Table No.1</div>
@@ -730,17 +762,19 @@
 
     <div class="card">
       <div class="card-img">
-        <div class="card-glow"></div>
-        <div class="card-img-placeholder">
+        <span class="card-num">#LB-S02</span>
+        <span class="sold-badge">Sold</span>
+        <div class="card-overlay"></div>
+        <div class="card-slides">
+          <!-- <div class="card-slide"><img src="images/sold-002.jpg" alt="Cone Pendant No.1"></div> -->
+        </div>
+        <div class="card-placeholder-icon">
           <svg viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg">
             <line x1="30" y1="4" x2="30" y2="20"/>
             <path d="M10 20 Q30 16 50 20 L46 52 Q30 58 14 52 Z"/>
             <path d="M14 52 Q30 62 46 52"/>
           </svg>
         </div>
-        <div class="card-overlay"></div>
-        <span class="card-num">#LB-S02</span>
-        <span class="sold-badge">Sold</span>
       </div>
       <div class="card-body">
         <div class="card-name">Cone Pendant No.1</div>
@@ -751,22 +785,22 @@
 
     <div class="card">
       <div class="card-img">
-        <div class="card-glow"></div>
-        <div class="card-img-placeholder">
-          <svg viewBox="0 0 60 110" xmlns="http://www.w3.org/2000/svg">
-            <rect x="22" y="2" width="16" height="22" rx="8"/>
-            <line x1="30" y1="24" x2="30" y2="82"/>
-            <ellipse cx="30" cy="84" rx="20" ry="5"/>
-            <path d="M18 30 Q10 50 14 66"/>
-          </svg>
-        </div>
-        <div class="card-overlay"></div>
         <span class="card-num">#LB-S03</span>
         <span class="sold-badge">Sold</span>
+        <div class="card-overlay"></div>
+        <div class="card-slides">
+          <!-- <div class="card-slide"><img src="images/sold-003.jpg" alt="Slim Floor No.1"></div> -->
+        </div>
+        <div class="card-placeholder-icon">
+          <svg viewBox="0 0 60 110" xmlns="http://www.w3.org/2000/svg">
+            <rect x="22" y="2" width="16" height="22" rx="8"/><line x1="30" y1="24" x2="30" y2="82"/>
+            <ellipse cx="30" cy="84" rx="20" ry="5"/>
+          </svg>
+        </div>
       </div>
       <div class="card-body">
         <div class="card-name">Slim Floor No.1</div>
-        <div class="card-desc" data-uk="Підлоговий торшер — тонка латунна трубка з мінімальною круглою основою, лампа відкрита, на увазі." data-en="Floor lamp — slender brass tube on a minimal round base, exposed bulb.">Підлоговий торшер — тонка латунна трубка з мінімальною круглою основою, лампа відкрита, на увазі.</div>
+        <div class="card-desc" data-uk="Підлоговий торшер — тонка латунна трубка з мінімальною круглою основою, лампа відкрита." data-en="Floor lamp — slender brass tube on a minimal round base, exposed bulb.">Підлоговий торшер — тонка латунна трубка з мінімальною круглою основою, лампа відкрита.</div>
         <span class="card-material" data-uk="Латунь / відкрита лампа" data-en="Brass / exposed bulb">Латунь / відкрита лампа</span>
       </div>
     </div>
@@ -774,49 +808,37 @@
   </div>
 </section>
 
-<!-- CONTACTS -->
+<!-- ══════════════════════════════════════════════════════════
+     КОНТАКТИ
+════════════════════════════════════════════════════════════ -->
 <div class="contacts-wrap" id="contacts">
   <div class="contacts-inner">
     <div class="contacts-left">
       <p class="section-label" data-uk="Зв'язатися" data-en="Get in touch">Зв'язатися</p>
-      <h2 class="section-title">
-        <span data-uk="Давайте<br><em>поговоримо</em>" data-en="Let's<br><em>talk</em>">Давайте<br><em>поговоримо</em></span>
-      </h2>
+      <h2 class="section-title"><span data-uk="Давайте<br><em>поговоримо</em>" data-en="Let's<br><em>talk</em>">Давайте<br><em>поговоримо</em></span></h2>
       <p data-uk="Приймаю замовлення на авторські світильники. Працюю з приватними клієнтами, архітекторами та дизайнерами інтер'єру." data-en="I accept orders for bespoke lighting. I work with private clients, architects and interior designers.">Приймаю замовлення на авторські світильники. Працюю з приватними клієнтами, архітекторами та дизайнерами інтер'єру.</p>
     </div>
     <div>
       <ul class="contacts-list">
         <li>
+          <!-- ════ INSTAGRAM: змінити href і текст ════ -->
           <a class="contact-item" href="https://instagram.com/lostbluestudio" target="_blank">
-            <div class="contact-icon">
-              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
-            </div>
-            <div>
-              <div class="contact-type">Instagram</div>
-              <div class="contact-val">@lostbluestudio</div>
-            </div>
+            <div class="contact-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg></div>
+            <div><div class="contact-type">Instagram</div><div class="contact-val">@lostbluestudio</div></div>
           </a>
         </li>
         <li>
+          <!-- ════ TELEGRAM: змінити href і текст ════ -->
           <a class="contact-item" href="https://t.me/lostbluestudio" target="_blank">
-            <div class="contact-icon">
-              <svg viewBox="0 0 24 24"><path d="M21 5L2 12.5l7 1M21 5l-5 15-4-5.5M21 5L9 13.5m0 0V19l2.5-2.5"/></svg>
-            </div>
-            <div>
-              <div class="contact-type">Telegram</div>
-              <div class="contact-val">@lostbluestudio</div>
-            </div>
+            <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M21 5L2 12.5l7 1M21 5l-5 15-4-5.5M21 5L9 13.5m0 0V19l2.5-2.5"/></svg></div>
+            <div><div class="contact-type">Telegram</div><div class="contact-val">@lostbluestudio</div></div>
           </a>
         </li>
         <li>
+          <!-- ════ EMAIL: змінити href і текст ════ -->
           <a class="contact-item" href="mailto:hello@lostbluestudio.com">
-            <div class="contact-icon">
-              <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
-            </div>
-            <div>
-              <div class="contact-type">Email</div>
-              <div class="contact-val">hello@lostbluestudio.com</div>
-            </div>
+            <div class="contact-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></div>
+            <div><div class="contact-type">Email</div><div class="contact-val">hello@lostbluestudio.com</div></div>
           </a>
         </li>
       </ul>
@@ -824,58 +846,113 @@
   </div>
 </div>
 
-<!-- FOOTER -->
+<!-- ══════════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════════ -->
 <footer>
   <div class="footer-logo">Lost Blue Studio</div>
-  <div class="footer-copy" data-uk="© 2025 Lost Blue Studio — Авторські світильники, Україна" data-en="© 2025 Lost Blue Studio — Designer Lighting, Ukraine">© 2025 Lost Blue Studio — Авторські світильники, Україна</div>
+  <div class="footer-copy"
+    data-uk="© 2025 Lost Blue Studio — Авторські світильники, Україна"
+    data-en="© 2025 Lost Blue Studio — Designer Lighting, Ukraine">
+    © 2025 Lost Blue Studio — Авторські світильники, Україна
+  </div>
 </footer>
 
 <script>
-  // ── Nav scroll ──
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 60);
+// ── Nav scroll ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+
+// ── Якщо є логотип у hero — ховаємо текстовий заголовок ──
+const heroLogo = document.getElementById('heroLogo');
+const heroTitle = document.getElementById('heroTitle');
+if (heroLogo && heroLogo.complete && heroLogo.naturalWidth > 0) {
+  heroLogo.style.display = 'block';
+  if (heroTitle) heroTitle.style.display = 'none';
+}
+
+// ── Language switcher ──
+let currentLang = 'uk';
+const langBtns = document.querySelectorAll('.lang-btn');
+function applyLang(lang) {
+  currentLang = lang;
+  langBtns.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  document.documentElement.lang = lang === 'uk' ? 'uk' : 'en';
+  document.querySelectorAll('[data-uk][data-en]').forEach(el => {
+    el.innerHTML = lang === 'uk' ? el.dataset.uk : el.dataset.en;
   });
+  try { localStorage.setItem('lb-lang', lang); } catch(e) {}
+}
+langBtns.forEach(btn => btn.addEventListener('click', () => applyLang(btn.dataset.lang)));
+try { const s = localStorage.getItem('lb-lang'); if (s && s !== 'uk') applyLang(s); } catch(e) {}
 
-  // ── Language switcher ──
-  let currentLang = 'uk';
-  const langBtns = document.querySelectorAll('.lang-btn');
+// ── Category filter ──
+const filterBtns = document.querySelectorAll('.filter-btn');
+const cards = document.querySelectorAll('#productsGrid .card');
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    cards.forEach(c => c.classList.toggle('hidden', f !== 'all' && c.dataset.category !== f));
+  });
+});
 
-  function applyLang(lang) {
-    currentLang = lang;
-    langBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
-    document.documentElement.lang = lang === 'uk' ? 'uk' : 'en';
-    document.querySelectorAll('[data-uk][data-en]').forEach(el => {
-      el.innerHTML = lang === 'uk' ? el.dataset.uk : el.dataset.en;
-    });
-    try { localStorage.setItem('lb-lang', lang); } catch(e) {}
+// ── Card sliders ──
+document.querySelectorAll('.card-img').forEach(cardImg => {
+  const slides = cardImg.querySelector('.card-slides');
+  const placeholder = cardImg.querySelector('.card-placeholder-icon');
+  if (!slides) return;
+
+  const slideEls = slides.querySelectorAll('.card-slide');
+  const count = slideEls.length;
+
+  // Якщо є хоча б одне фото — ховаємо іконку-заглушку
+  if (count > 0 && placeholder) placeholder.style.display = 'none';
+
+  // Якщо фото одне або нуль — стрілки та крапки не потрібні
+  if (count <= 1) return;
+
+  let current = 0;
+
+  // Стрілки
+  const prev = document.createElement('button');
+  prev.className = 'slider-arrow prev';
+  prev.innerHTML = '&#8249;';
+  const next = document.createElement('button');
+  next.className = 'slider-arrow next';
+  next.innerHTML = '&#8250;';
+  cardImg.appendChild(prev);
+  cardImg.appendChild(next);
+
+  // Крапки
+  const dotsWrap = document.createElement('div');
+  dotsWrap.className = 'slider-dots';
+  for (let i = 0; i < count; i++) {
+    const d = document.createElement('div');
+    d.className = 'slider-dot' + (i === 0 ? ' active' : '');
+    dotsWrap.appendChild(d);
+  }
+  cardImg.appendChild(dotsWrap);
+  const dots = dotsWrap.querySelectorAll('.slider-dot');
+
+  function goTo(idx) {
+    current = (idx + count) % count;
+    slides.style.transform = `translateX(-${current * 100}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
   }
 
-  langBtns.forEach(btn => btn.addEventListener('click', () => applyLang(btn.dataset.lang)));
+  prev.addEventListener('click', e => { e.stopPropagation(); goTo(current - 1); });
+  next.addEventListener('click', e => { e.stopPropagation(); goTo(current + 1); });
 
-  try {
-    const saved = localStorage.getItem('lb-lang');
-    if (saved && saved !== 'uk') applyLang(saved);
-  } catch(e) {}
-
-  // ── Category filter ──
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const cards = document.querySelectorAll('#productsGrid .card');
-
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filter = btn.dataset.filter;
-      cards.forEach(card => {
-        if (filter === 'all' || card.dataset.category === filter) {
-          card.classList.remove('hidden');
-        } else {
-          card.classList.add('hidden');
-        }
-      });
-    });
+  // Свайп на мобільному
+  let startX = 0;
+  slides.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  slides.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) goTo(dx < 0 ? current + 1 : current - 1);
   });
+});
 </script>
 
 </body>
