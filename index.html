@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lost Blue Studio — Designer Lighting</title>
+  <!-- <link rel="icon" type="image/png" href="images/logo.png"> -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --cream:#f4f0ea;--blue:#1a3a5c;--blue-light:#b8cfe0;
+      --gold:#c8a96e;--muted:#8a8070;--border:rgba(26,58,92,.15);
+      --flip-dur:.55s;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Montserrat',sans-serif;background:var(--cream);color:#0e0e0e;overflow-x:hidden}
+
+    /* ── NAV ── */
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.4rem 3rem;background:transparent;transition:background .4s,backdrop-filter .4s}
+    nav.scrolled{background:rgba(10,31,53,.92);backdrop-filter:blur(12px)}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--cream);letter-spacing:.06em;text-decoration:none;white-space:nowrap;display:flex;align-items:center;gap:.8rem}
+    .nav-logo span{color:var(--gold)}
+    .nav-logo-img{height:36px;width:auto;display:block}
+    .nav-right{display:flex;align-items:center;gap:2.5rem}
+    .nav-links{display:flex;gap:2.5rem;list-style:none}
+    .nav-links a{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,240,234,.6);text-decoration:none;transition:color .2s}
+    .nav-links a:hover{color:var(--gold)}
+    .lang-switcher{display:flex;align-items:center;gap:.2rem}
+    .lang-btn{background:none;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:rgba(244,240,234,.45);padding:.3rem .5rem;transition:color .2s}
+    .lang-btn.active{color:var(--gold)}
+    .lang-btn:hover{color:rgba(244,240,234,.85)}
+    .lang-sep{font-size:.55rem;color:rgba(244,240,234,.2)}
+
+    /* ── HERO ── */
+    .hero{position:relative;height:100vh;min-height:600px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:var(--blue)}
+    .hero-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:.35}
+    .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 110%,#2d5986 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 80% 20%,rgba(200,169,110,.12) 0%,transparent 60%),linear-gradient(160deg,#0a1f35 0%,#1a3a5c 50%,#0d2440 100%)}
+    .hero-noise{position:absolute;inset:0;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px}
+    .hero-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(200,169,110,.15) 0%,transparent 70%);top:20%;left:50%;transform:translateX(-50%);animation:glowpulse 4s ease-in-out infinite}
+    @keyframes glowpulse{0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.15)}}
+    .hero-line{position:absolute;background:rgba(200,169,110,.2)}
+    .hero-line-h{width:60%;height:1px;top:30%;left:20%;animation:fadein 2s ease forwards}
+    .hero-line-h2{width:40%;height:1px;bottom:28%;right:10%;animation:fadein 2.4s ease forwards}
+    .hero-line-v{width:1px;height:40%;top:15%;left:12%;animation:fadein 2.8s ease forwards}
+    @keyframes fadein{from{opacity:0}to{opacity:1}}
+    @keyframes slideup{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .hero-content{position:relative;text-align:center;color:var(--cream);animation:slideup 1.2s cubic-bezier(.16,1,.3,1) forwards}
+    .hero-logo-img{height:80px;width:auto;margin-bottom:2rem;display:none}
+    .hero-eyebrow{font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:1.6rem;opacity:.9}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,9vw,8.5rem);font-weight:300;letter-spacing:.04em;line-height:.92;color:#f4f0ea}
+    .hero-title em{font-style:italic;color:var(--blue-light)}
+    .hero-sub{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(244,240,234,.45);margin-top:1.8rem}
+    .hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:rgba(244,240,234,.35);font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;animation:fadein 3s ease forwards}
+    .hero-scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(200,169,110,.5),transparent);animation:scrollpulse 2s ease-in-out infinite}
+    @keyframes scrollpulse{0%,100%{opacity:.4;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)}}
+
+    /* ── SECTIONS ── */
+    section{padding:6rem 2rem;max-width:1200px;margin:0 auto}
+    .section-label{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:300;color:var(--blue);line-height:1.1}
+    .section-title em{font-style:italic}
+
+    /* ── ABOUT ── */
+    .about-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+    .about-visual{position:relative;aspect-ratio:3/4;background:var(--blue);overflow:visible}
+    .about-visual::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#1a3a5c 0%,#0a1f35 100%)}
+    .about-visual::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 30% at 50% 35%,rgba(200,169,110,.18) 0%,transparent 70%)}
+    .about-visual-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1}
+    .about-visual-icon svg{width:80px;height:auto;opacity:.18;stroke:var(--gold);fill:none;stroke-width:.8}
+    .about-offset{position:absolute;bottom:-1.5rem;right:-1.5rem;width:60%;aspect-ratio:1;border:1px solid var(--gold);opacity:.3;pointer-events:none}
+    .about-text p{font-size:.88rem;line-height:1.9;color:#3a3530;margin-bottom:1.4rem;font-weight:300}
+    .about-text p strong{font-weight:600;color:var(--blue)}
+    .about-stats{display:flex;gap:2.5rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border)}
+    .stat-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--blue);line-height:1}
+    .stat-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:.3rem}
+
+    /* ── FILTER ── */
+    .products-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+    .filter-bar{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:2.5rem}
+    .filter-btn{background:none;border:1px solid var(--border);cursor:pointer;font-family:'Montserrat',sans-serif;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:.4rem 1rem;transition:all .2s}
+    .filter-btn.active,.filter-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(200,169,110,.05)}
+
+    /* ── GRID ── */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5px;background:var(--border)}
+    .card-wrap{background:var(--cream)}
+    .card-wrap.hidden{display:none}
+
+    /* ── FLIP CARD ── */
+    .flip-root{
+      width:100%;height:100%;
+      perspective:1200px;
+      cursor:default;
+    }
+    .flip-inner{
+      position:relative;width:100%;
+      transform-style:preserve-3d;
+      transition:transform var(--flip-dur) cubic-bezier(.4,.2,.2,1);
+    }
+    .flip-inner.flipped{transform:rotateY(180deg)}
+
+    .flip-front,.flip-back{
+      width:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    }
+    .flip-back{
+      position:absolute;top:0;left:0;
+      transform:rotateY(180deg);
+      background:var(--blue);
+      color:var(--cream);
+      display:flex;flex-direction:column;
+      padding:1.6rem 1.4rem 1.4rem;
+    }
+
+    /* Flip trigger button — стрелка в правом нижнем углу лицевой стороны */
+    .flip-trigger{
+      position:absolute;bottom:.85rem;right:.85rem;
+      width:32px;height:32px;border-radius:50%;
+      background:var(--blue);border:none;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      color:var(--cream);font-size:.9rem;z-index:20;
+      box-shadow:0 2px 8px rgba(0,0,0,.18);
+      transition:background .2s,transform .2s;
+      flex-shrink:0;
+    }
+    .flip-trigger:hover{background:var(--gold);transform:scale(1.1)}
+    .flip-trigger svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+    /* кнопка "назад" на обороте */
+    .flip-back-btn{
+      align-self:flex-start;background:none;border:none;cursor:pointer;
+      font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+      color:rgba(244,240,234,.5);padding:0;margin-bottom:1rem;
+      display:flex;align-items:center;gap:.4rem;transition:color .2s;
+    }
+    .flip-back-btn:hover{color:var(--gold)}
+    .flip-back-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+
+    .flip-back-id{font-size:.58rem;letter-spacing:.25em;color:var(--gold);margin-bottom:.5rem}
+    .flip-back-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;line-height:1.1;margin-bottom:1rem;color:var(--cream)}
+    .flip-back-rows{flex:1;display:flex;flex-direction:column;gap:.55rem}
+    .flip-back-row{display:flex;flex-direction:column;gap:.1rem;padding-bottom:.55rem;border-bottom:1px solid rgba(244,240,234,.08)}
+    .flip-back-row:last-child{border-bottom:none}
+    .flip-back-key{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);opacity:.8}
+    .flip-back-val{font-size:.75rem;line-height:1.5;color:rgba(244,240,234,.8);font-weight:300}
+    .flip-back-note{margin-top:auto;padding-top:.8rem;font-size:.7rem;font-style:italic;color:rgba(244,240,234,.45);line-height:1.6}
+
+    /* ── CARD FRONT components ── */
+    .card-img{aspect-ratio:3/4;overflow:hidden;position:relative;background:#1a2a3a}
+    .card-slides{display:flex;height:100%;transition:transform .45s cubic-bezier(.4,0,.2,1)}
+    .card-slide{min-width:100%;height:100%;position:relative;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+    .card-slide img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+    .flip-front:hover .card-slide img{transform:scale(1.04)}
+    .card-placeholder-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#1c2e40 0%,#0d1e2e 50%,#0a1520 100%)}
+    .card-placeholder-icon svg{width:56px;stroke:rgba(200,169,110,.55);fill:none;stroke-width:.7;filter:drop-shadow(0 0 18px rgba(200,169,110,.4))}
+    .slider-arrow{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:rgba(10,31,53,.65);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#f4f0ea;font-size:1rem;z-index:10;opacity:0;transition:opacity .25s;backdrop-filter:blur(4px)}
+    .slider-arrow.prev{left:.6rem}
+    .slider-arrow.next{right:.6rem}
+    .flip-front:hover .slider-arrow{opacity:1}
+    .slider-arrow:hover{background:rgba(10,31,53,.9)}
+    .slider-dots{position:absolute;bottom:.7rem;left:50%;transform:translateX(-50%);display:flex;gap:.4rem;z-index:10}
+    .slider-dot{width:5px;height:5px;border-radius:50%;background:rgba(244,240,234,.4);transition:background .25s,transform .25s}
+    .slider-dot.active{background:var(--gold);transform:scale(1.3)}
+    .card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,31,53,.75) 0%,transparent 55%);opacity:0;transition:opacity .4s;pointer-events:none}
+    .flip-front:hover .card-overlay{opacity:1}
+    .card-num{position:absolute;top:1rem;left:1rem;font-size:.6rem;letter-spacing:.2em;color:var(--gold);background:rgba(10,31,53,.75);padding:.25rem .6rem;backdrop-filter:blur(4px);z-index:5}
+    .card-category-badge{position:absolute;top:1rem;right:1rem;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,169,110,.8);background:rgba(10,31,53,.65);padding:.2rem .6rem;backdrop-filter:blur(4px);z-index:5}
+    .card-body{padding:1.2rem 1.4rem 2.8rem;border-top:1px solid var(--border);position:relative}
+    .card-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:var(--blue);margin-bottom:.4rem}
+    .card-desc{font-size:.72rem;line-height:1.6;color:var(--muted);font-weight:300}
+    .card-material{display:inline-block;margin-top:.8rem;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,169,110,.4);padding:.2rem .6rem}
+
+    /* ── DIVIDER ── */
+    .divider{max-width:100%;padding:0;margin:0}
+    .divider-inner{display:flex;align-items:center;justify-content:center;gap:2rem;padding:4rem 3rem;background:var(--blue);position:relative;overflow:hidden}
+    .divider-inner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 100% at 50% 50%,rgba(45,89,134,.5),transparent)}
+    .divider-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(200,169,110,.5),transparent)}
+    .divider-text{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:rgba(244,240,234,.5);letter-spacing:.1em;white-space:nowrap;position:relative}
+
+    /* ── SOLD ── */
+    .sold-section{background:var(--cream)}
+    .sold-label{display:inline-flex;align-items:center;gap:.6rem;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:3rem}
+    .sold-label::before{content:'';display:block;width:24px;height:1px;background:var(--muted)}
+    .grid-sold .card-img{filter:grayscale(100%);opacity:.55}
+    .grid-sold .card-name{color:var(--muted)}
+    .sold-badge{position:absolute;top:1rem;right:1rem;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);background:rgba(0,0,0,.5);padding:.2rem .7rem;backdrop-filter:blur(4px);z-index:5}
+
+    /* ── LOADING STATE ── */
+    .grid-loading{text-align:center;padding:4rem;color:var(--muted);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;grid-column:1/-1;background:var(--cream)}
+
+    /* ── CONTACTS ── */
+    .contacts-wrap{background:var(--blue);max-width:100%;padding:0;margin:0}
+    .contacts-inner{max-width:1200px;margin:0 auto;padding:6rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+    .contacts-left .section-title{color:var(--cream)}
+    .contacts-left .section-label{color:var(--gold)}
+    .contacts-left p{font-size:.82rem;line-height:1.9;color:rgba(244,240,234,.55);margin-top:1.5rem;font-weight:300}
+    .contacts-list{list-style:none;display:flex;flex-direction:column;gap:0}
+    .contact-item{display:flex;align-items:center;gap:1.5rem;padding:1.4rem 0;border-bottom:1px solid rgba(244,240,234,.08);text-decoration:none;color:var(--cream);transition:color .2s}
+    .contact-item:hover{color:var(--gold)}
+    .contact-icon{width:40px;height:40px;border:1px solid rgba(200,169,110,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .contact-icon svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5}
+    .contact-type{font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:.2rem}
+    .contact-val{font-size:.9rem;font-weight:300}
+
+    /* ── FOOTER ── */
+    footer{background:#06131f;padding:2rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+    .footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:rgba(244,240,234,.3);letter-spacing:.08em}
+    .footer-copy{font-size:.6rem;letter-spacing:.15em;color:rgba(244,240,234,.2)}
+
+    @media(max-width:768px){
+      nav{padding:1.2rem 1.5rem}
+      .nav-links{display:none}
+      .about-wrap{grid-template-columns:1fr;gap:2rem}
+      .about-visual{aspect-ratio:4/3}
+      .contacts-inner{grid-template-columns:1fr;gap:3rem}
+      section{padding:4rem 1.5rem}
+      .flip-back-name{font-size:1.1rem}
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#" class="nav-logo" id="navLogo">
+    <!-- <img class="nav-logo-img" src="images/logo.png" alt="Lost Blue Studio"> -->
+    Lost <span>Blue</span> Studio
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about"     data-uk="Про студію"  data-en="About">Про студію</a></li>
+      <li><a href="#available" data-uk="Світильники" data-en="Lights">Світильники</a></li>
+      <li><a href="#sold"      data-uk="Архів"       data-en="Archive">Архів</a></li>
+      <li><a href="#contacts"  data-uk="Контакт"     data-en="Contact">Контакт</a></li>
+    </ul>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="uk">УКР</button>
+      <span class="lang-sep">/</span>
+      <button class="lang-btn" data-lang="en">ENG</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <!-- <img class="hero-bg-img" src="images/hero-bg.jpg" alt=""> -->
+  <div class="hero-bg"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-line hero-line-h"></div>
+  <div class="hero-line hero-line-h2"></div>
+  <div class="hero-line hero-line-v"></div>
+  <div class="hero-content">
+    <!-- <img class="hero-logo-img" id="heroLogo" src="images/logo.png" alt="Lost Blue Studio"> -->
+    <p class="hero-eyebrow" data-uk="Дизайнерські світильники для інтер'єру" data-en="Designer lighting for interiors">Дизайнерські світильники для інтер'єру</p>
+    <h1 class="hero-title" id="heroTitle">Lost <em>Blue</em><br>Studio</h1>
+    <p class="hero-sub" data-uk="Світло як об'єкт мистецтва" data-en="Light as an object of art">Світло як об'єкт мистецтва</p>
+  </div>
+  <div class="hero-scroll"><div class="hero-scroll-line"></div><span data-uk="гортати" data-en="scroll">гортати</span></div>
+</header>
+
+<section id="about">
+  <div class="about-wrap">
+    <div class="about-visual">
+      <div class="about-visual-icon">
+        <svg viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="44" r="28"/>
+          <path d="M28 72 Q26 82 26 88 Q26 92 40 92 Q54 92 54 88 Q54 82 52 72"/>
+          <line x1="32" y1="92" x2="32" y2="100"/><line x1="48" y1="92" x2="48" y2="100"/>
+          <line x1="32" y1="100" x2="48" y2="100"/><line x1="40" y1="100" x2="40" y2="108"/>
+          <path d="M33 52 Q36 44 40 48 Q44 52 47 44" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="about-offset"></div>
+    </div>
+    <div class="about-text">
+      <p class="section-label" data-uk="Про студію" data-en="About the studio">Про студію</p>
+      <h2 class="section-title"><span data-uk="Світло, що<br><em>формує простір</em>" data-en="Light that<br><em>shapes space</em>">Світло, що<br><em>формує простір</em></span></h2>
+      <br>
+      <p data-uk="Мене звати <strong>Сергій</strong>. Я проєктую та виготовляю авторські світильники — настінні, настільні, стельові та підлогові. Кожен виріб існує в єдиному екземплярі або малій серії." data-en="My name is <strong>Serhii</strong>. I design and handcraft bespoke lighting — wall, table, ceiling and floor fixtures. Every piece exists as a one-off or a small series.">Мене звати <strong>Сергій</strong>. Я проєктую та виготовляю авторські світильники — настінні, настільні, стельові та підлогові. Кожен виріб існує в єдиному екземплярі або малій серії.</p>
+      <p data-uk="Lost Blue Studio — це перетин <strong>промислового дизайну та ремесла</strong>: метал, скло, бетон, дерево. Матеріали підбираються під характер простору, де буде жити світло." data-en="Lost Blue Studio sits at the intersection of <strong>industrial design and craft</strong>: metal, glass, concrete, wood. Materials are chosen to match the character of the space where the light will live.">Lost Blue Studio — це перетин <strong>промислового дизайну та ремесла</strong>: метал, скло, бетон, дерево. Матеріали підбираються під характер простору, де буде жити світло.</p>
+      <p data-uk="Приймаю <strong>індивідуальні замовлення</strong>. Розробляю під ваш інтер'єр від ескізу до готового виробу." data-en="I accept <strong>custom orders</strong> — from sketch to finished piece, designed around your interior.">Приймаю <strong>індивідуальні замовлення</strong>. Розробляю під ваш інтер'єр від ескізу до готового виробу.</p>
+      <div class="about-stats">
+        <div><div class="stat-num">1:1</div><div class="stat-label" data-uk="Кожен виріб унікальний" data-en="Every piece unique">Кожен виріб унікальний</div></div>
+        <div><div class="stat-num">4</div><div class="stat-label" data-uk="Типи монтажу" data-en="Mounting types">Типи монтажу</div></div>
+        <div><div class="stat-num">UA</div><div class="stat-label" data-uk="Зроблено в Україні" data-en="Made in Ukraine">Зроблено в Україні</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="available" style="padding-top:0;">
+  <div class="products-header">
+    <div>
+      <p class="section-label" data-uk="Доступно зараз" data-en="Available now">Доступно зараз</p>
+      <h2 class="section-title"><span data-uk="Актуальні <em>роботи</em>" data-en="Current <em>works</em>">Актуальні <em>роботи</em></span></h2>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all"     data-uk="Усі"       data-en="All">Усі</button>
+    <button class="filter-btn"        data-filter="wall"    data-uk="Настінні"  data-en="Wall">Настінні</button>
+    <button class="filter-btn"        data-filter="table"   data-uk="Настільні" data-en="Table">Настільні</button>
+    <button class="filter-btn"        data-filter="ceiling" data-uk="Стельові"  data-en="Ceiling">Стельові</button>
+    <button class="filter-btn"        data-filter="floor"   data-uk="Підлогові" data-en="Floor">Підлогові</button>
+  </div>
+  <div class="grid" id="productsGrid">
+    <div class="grid-loading" data-uk="Завантаження..." data-en="Loading...">Завантаження...</div>
+  </div>
+</section>
+
+<div class="divider">
+  <div class="divider-inner">
+    <div class="divider-line"></div>
+    <span class="divider-text" data-uk="Sold — знайшло свій простір" data-en="Sold — found its space">Sold — знайшло свій простір</span>
+    <div class="divider-line"></div>
+  </div>
+</div>
+
+<section id="sold" class="sold-section">
+  <span class="sold-label" data-uk="Архів продажів" data-en="Sales archive">Архів продажів</span>
+  <div class="grid grid-sold" id="soldGrid">
+    <div class="grid-loading" data-uk="Завантаження..." data-en="Loading...">Завантаження...</div>
+  </div>
+</section>
+
+<div class="contacts-wrap" id="contacts">
+  <div class="contacts-inner">
+    <div class="contacts-left">
+      <p class="section-label" data-uk="Зв'язатися" data-en="Get in touch">Зв'язатися</p>
+      <h2 class="section-title"><span data-uk="Давайте<br><em>поговоримо</em>" data-en="Let's<br><em>talk</em>">Давайте<br><em>поговоримо</em></span></h2>
+      <p data-uk="Приймаю замовлення на авторські світильники. Працюю з приватними клієнтами, архітекторами та дизайнерами інтер'єру." data-en="I accept orders for bespoke lighting. I work with private clients, architects and interior designers.">Приймаю замовлення на авторські світильники. Працюю з приватними клієнтами, архітекторами та дизайнерами інтер'єру.</p>
+    </div>
+    <div>
+      <ul class="contacts-list">
+        <li>
+          <a class="contact-item" href="https://instagram.com/lostbluestudio" target="_blank" rel="noopener noreferrer">
+            <div class="contact-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg></div>
+            <div><div class="contact-type">Instagram</div><div class="contact-val">@lostbluestudio</div></div>
+          </a>
+        </li>
+        <li>
+          <a class="contact-item" href="https://t.me/lostbluestudio" target="_blank" rel="noopener noreferrer">
+            <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M21 5L2 12.5l7 1M21 5l-5 15-4-5.5M21 5L9 13.5m0 0V19l2.5-2.5"/></svg></div>
+            <div><div class="contact-type">Telegram</div><div class="contact-val">@lostbluestudio</div></div>
+          </a>
+        </li>
+        <li>
+          <a class="contact-item" href="mailto:hello@lostbluestudio.com">
+            <div class="contact-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></div>
+            <div><div class="contact-type">Email</div><div class="contact-val">hello@lostbluestudio.com</div></div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Lost Blue Studio</div>
+  <div class="footer-copy" data-uk="© 2025 Lost Blue Studio — Авторські світильники, Україна" data-en="© 2025 Lost Blue Studio — Designer Lighting, Ukraine">© 2025 Lost Blue Studio — Авторські світильники, Україна</div>
+</footer>
+
+<script>
+'use strict';
+
+// ── Security: block clickjacking attempts in JS too ──
+if (window.self !== window.top) { document.body.innerHTML = ''; }
+
+// ── Nav scroll ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60), {passive:true});
+
+// ── Language ──
+let currentLang = 'uk';
+const langBtns = document.querySelectorAll('.lang-btn');
+
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// Safe text getter from bilingual object
+function t(obj) {
+  if (!obj) return '';
+  const val = obj[currentLang] || obj.uk || obj.en || '';
+  return String(val);
+}
+
+function applyLang(lang) {
+  currentLang = lang;
+  langBtns.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  document.documentElement.lang = lang === 'uk' ? 'uk' : 'en';
+  document.querySelectorAll('[data-uk][data-en]').forEach(el => {
+    const raw = lang === 'uk' ? el.dataset.uk : el.dataset.en;
+    // Only allow <em>, <strong>, <br> tags — strip everything else
+    el.innerHTML = (raw||'').replace(/<(?!\/?(?:em|strong|br)\b)[^>]*>/gi,'');
+  });
+  // update dynamic cards language
+  document.querySelectorAll('.dyn-desc').forEach(el => {
+    const raw = lang === 'uk' ? el.dataset.uk : el.dataset.en;
+    el.textContent = raw || '';
+  });
+  document.querySelectorAll('.dyn-material').forEach(el => {
+    const raw = lang === 'uk' ? el.dataset.uk : el.dataset.en;
+    el.textContent = raw || '';
+  });
+  document.querySelectorAll('.dyn-badge').forEach(el => {
+    const raw = lang === 'uk' ? el.dataset.uk : el.dataset.en;
+    el.textContent = raw || '';
+  });
+  document.querySelectorAll('.dyn-back-val').forEach(el => {
+    const raw = lang === 'uk' ? el.dataset.uk : el.dataset.en;
+    el.textContent = raw || '';
+  });
+  document.querySelectorAll('.dyn-back-note').forEach(el => {
+    const raw = lang === 'uk' ? el.dataset.uk : el.dataset.en;
+    el.textContent = raw || '';
+  });
+  try { localStorage.setItem('lb-lang', lang); } catch(e) {}
+}
+
+langBtns.forEach(btn => btn.addEventListener('click', () => applyLang(btn.dataset.lang)));
+try { const s = localStorage.getItem('lb-lang'); if (s && s !== 'uk') applyLang(s); } catch(e) {}
+
+// ── Filter ──
+const filterBtns = document.querySelectorAll('.filter-btn');
+let activeFilter = 'all';
+
+function applyFilter() {
+  document.querySelectorAll('#productsGrid .card-wrap').forEach(c => {
+    c.classList.toggle('hidden', activeFilter !== 'all' && c.dataset.category !== activeFilter);
+  });
+}
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    applyFilter();
+  });
+});
+
+// ── Build card HTML from JSON data ──
+function buildPlaceholderSVG() {
+  return `<div class="card-placeholder-icon">
+    <svg viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg">
+      <line x1="30" y1="2" x2="30" y2="18"/><circle cx="30" cy="24" r="6"/>
+      <line x1="30" y1="30" x2="30" y2="44"/>
+      <ellipse cx="30" cy="56" rx="22" ry="12"/>
+      <path d="M8 54 Q30 70 52 54"/>
+    </svg>
+  </div>`;
+}
+
+function buildBack(p) {
+  const b = p.back || {};
+  const keys = ['dimensions','power','mounting','finish','lead_time'];
+  const labels = {
+    dimensions: {uk:'Розміри', en:'Dimensions'},
+    power:      {uk:'Живлення', en:'Power'},
+    mounting:   {uk:'Монтаж', en:'Mounting'},
+    finish:     {uk:'Покриття', en:'Finish'},
+    lead_time:  {uk:'Термін виготовлення', en:'Lead time'},
+  };
+  let rows = '';
+  keys.forEach(k => {
+    if (!b[k]) return;
+    const ukVal = escapeHTML(b[k].uk || '');
+    const enVal = escapeHTML(b[k].en || '');
+    const ukLab = escapeHTML(labels[k].uk);
+    const enLab = escapeHTML(labels[k].en);
+    rows += `<div class="flip-back-row">
+      <span class="dyn-back-key" data-uk="${ukLab}" data-en="${enLab}">${currentLang==='uk'?ukLab:enLab}</span>
+      <span class="dyn-back-val" data-uk="${ukVal}" data-en="${enVal}">${currentLang==='uk'?ukVal:enVal}</span>
+    </div>`;
+  });
+
+  const noteUk = escapeHTML((b.note||{}).uk||'');
+  const noteEn = escapeHTML((b.note||{}).en||'');
+  const note = noteUk || noteEn
+    ? `<p class="flip-back-note dyn-back-note" data-uk="${noteUk}" data-en="${noteEn}">${currentLang==='uk'?noteUk:noteEn}</p>`
+    : '';
+
+  return `
+    <button class="flip-back-btn" aria-label="Back">
+      <svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg>
+      <span data-uk="Назад" data-en="Back">${currentLang==='uk'?'Назад':'Back'}</span>
+    </button>
+    <div class="flip-back-id">${escapeHTML(p.id)}</div>
+    <div class="flip-back-name">${escapeHTML(p.name)}</div>
+    <div class="flip-back-rows">${rows}</div>
+    ${note}`;
+}
+
+function buildCard(p, isSold) {
+  // Validate photo paths — only allow images/ prefix, jpg/png/webp/avif
+  const safePhotos = (p.photos || []).filter(ph =>
+    typeof ph === 'string' && /^images\/[a-zA-Z0-9_\-]+\.(jpg|jpeg|png|webp|avif)$/.test(ph)
+  );
+
+  let slidesHTML = '';
+  safePhotos.forEach(ph => {
+    const alt = escapeHTML(p.name);
+    slidesHTML += `<div class="card-slide"><img src="${escapeHTML(ph)}" alt="${alt}" loading="lazy"></div>`;
+  });
+
+  const badgeUk = escapeHTML((p.badge||{}).uk||'');
+  const badgeEn = escapeHTML((p.badge||{}).en||'');
+  const descUk  = escapeHTML((p.desc||{}).uk||'');
+  const descEn  = escapeHTML((p.desc||{}).en||'');
+  const matUk   = escapeHTML((p.material||{}).uk||'');
+  const matEn   = escapeHTML((p.material||{}).en||'');
+
+  const soldBadge = isSold ? `<span class="sold-badge">Sold</span>` : '';
+  const catBadge  = !isSold
+    ? `<span class="card-category-badge dyn-badge" data-uk="${badgeUk}" data-en="${badgeEn}">${currentLang==='uk'?badgeUk:badgeEn}</span>`
+    : '';
+
+  const backHTML = buildBack(p);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'card-wrap';
+  if (!isSold) wrap.dataset.category = escapeHTML(p.category||'');
+
+  wrap.innerHTML = `
+    <div class="flip-root">
+      <div class="flip-inner">
+
+        <div class="flip-front">
+          <div class="card-img">
+            <span class="card-num">#${escapeHTML(p.id)}</span>
+            ${catBadge}
+            ${soldBadge}
+            <div class="card-overlay"></div>
+            <div class="card-slides">${slidesHTML}</div>
+            ${buildPlaceholderSVG()}
+          </div>
+          <div class="card-body">
+            <div class="card-name">${escapeHTML(p.name)}</div>
+            <div class="card-desc dyn-desc" data-uk="${descUk}" data-en="${descEn}">${currentLang==='uk'?descUk:descEn}</div>
+            <span class="card-material dyn-material" data-uk="${matUk}" data-en="${matEn}">${currentLang==='uk'?matUk:matEn}</span>
+            <button class="flip-trigger" aria-label="Show details">
+              <svg viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="flip-back">${backHTML}</div>
+      </div>
+    </div>`;
+
+  // ── Slider logic ──
+  const cardImg = wrap.querySelector('.card-img');
+  const slides = cardImg.querySelector('.card-slides');
+  const placeholder = cardImg.querySelector('.card-placeholder-icon');
+  const slideEls = slides.querySelectorAll('.card-slide');
+  const count = slideEls.length;
+
+  if (count > 0 && placeholder) placeholder.style.display = 'none';
+
+  if (count > 1) {
+    let cur = 0;
+    const prev = document.createElement('button');
+    prev.className = 'slider-arrow prev'; prev.innerHTML = '&#8249;'; prev.setAttribute('aria-label','Previous');
+    const next = document.createElement('button');
+    next.className = 'slider-arrow next'; next.innerHTML = '&#8250;'; next.setAttribute('aria-label','Next');
+    cardImg.appendChild(prev); cardImg.appendChild(next);
+
+    const dotsWrap = document.createElement('div'); dotsWrap.className = 'slider-dots';
+    for (let i=0;i<count;i++){const d=document.createElement('div');d.className='slider-dot'+(i===0?' active':'');dotsWrap.appendChild(d);}
+    cardImg.appendChild(dotsWrap);
+    const dots = dotsWrap.querySelectorAll('.slider-dot');
+
+    function goTo(idx){
+      cur=(idx+count)%count;
+      slides.style.transform=`translateX(-${cur*100}%)`;
+      dots.forEach((d,i)=>d.classList.toggle('active',i===cur));
+    }
+    prev.addEventListener('click', e=>{e.stopPropagation();goTo(cur-1);});
+    next.addEventListener('click', e=>{e.stopPropagation();goTo(cur+1);});
+    let sx=0;
+    slides.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});
+    slides.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)goTo(dx<0?cur+1:cur-1);});
+  }
+
+  // ── Flip logic ──
+  const flipInner = wrap.querySelector('.flip-inner');
+  const flipTrigger = wrap.querySelector('.flip-trigger');
+  const flipBackBtn = wrap.querySelector('.flip-back-btn');
+
+  flipTrigger.addEventListener('click', e => {
+    e.stopPropagation();
+    flipInner.classList.add('flipped');
+  });
+  flipBackBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    flipInner.classList.remove('flipped');
+  });
+
+  return wrap;
+}
+
+// ── Fetch & render products ──
+async function loadProducts() {
+  const grid   = document.getElementById('productsGrid');
+  const soldGr = document.getElementById('soldGrid');
+
+  try {
+    // Fetch index — list of JSON filenames
+    const idxRes = await fetch('products/index.json');
+    if (!idxRes.ok) throw new Error('index.json not found');
+    const list = await idxRes.json();
+
+    if (!Array.isArray(list)) throw new Error('index.json must be an array');
+
+    // Validate filenames — only allow lb-xxx.json pattern
+    const safe = list.filter(f => typeof f === 'string' && /^[a-z0-9_\-]+\.json$/.test(f));
+
+    const results = await Promise.allSettled(safe.map(f => fetch('products/'+f).then(r=>r.ok?r.json():null)));
+
+    const available = [];
+    const sold = [];
+
+    results.forEach(r => {
+      if (r.status !== 'fulfilled' || !r.value) return;
+      const p = r.value;
+      // Basic validation
+      if (typeof p.id !== 'string' || typeof p.name !== 'string') return;
+      if (p.available === false) {
+        sold.push(p);
+      } else {
+        available.push(p);
+      }
+    });
+
+    // Render available
+    grid.innerHTML = '';
+    if (available.length === 0) {
+      grid.innerHTML = '<div class="grid-loading" data-uk="Незабаром..." data-en="Coming soon...">Незабаром...</div>';
+    } else {
+      available.forEach(p => grid.appendChild(buildCard(p, false)));
+    }
+
+    // Render sold
+    soldGr.innerHTML = '';
+    if (sold.length === 0) {
+      soldGr.innerHTML = '<div class="grid-loading" data-uk="Архів порожній" data-en="Archive is empty">Архів порожній</div>';
+    } else {
+      sold.forEach(p => soldGr.appendChild(buildCard(p, true)));
+    }
+
+    applyFilter();
+    applyLang(currentLang); // re-run to apply current lang to new elements
+
+  } catch(err) {
+    console.warn('Products load error:', err.message);
+    grid.innerHTML = '<div class="grid-loading">—</div>';
+    soldGr.innerHTML = '<div class="grid-loading">—</div>';
+  }
+}
+
+loadProducts();
+</script>
+</body>
+</html>

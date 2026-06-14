@@ -1,0 +1,35 @@
+/*
+  # ──────────────────────────────────────────────────────────────
+  # ЗАГОЛОВКИ БЕЗОПАСНОСТИ — Lost Blue Studio
+  # Render.com автоматически применяет этот файл ко всем страницам
+  # ──────────────────────────────────────────────────────────────
+
+  # Запрещает встраивать сайт в iframe на чужих доменах (кликджекинг)
+  X-Frame-Options: DENY
+
+  # Блокирует MIME-снифинг браузером (подмена типов файлов)
+  X-Content-Type-Options: nosniff
+
+  # Включает XSS-фильтр браузера
+  X-XSS-Protection: 1; mode=block
+
+  # Управляет передачей Referer — не передаём полный URL на внешние сайты
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # Запрещает доступ к геолокации, микрофону, камере через браузерные API
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), usb=()
+
+  # Content Security Policy — самый важный заголовок
+  # Разрешает загружать ресурсы только с нашего домена и Google Fonts
+  # 'self'                  = только наш домен
+  # fonts.googleapis.com    = CSS шрифтов Google
+  # fonts.gstatic.com       = файлы шрифтов Google
+  # 'unsafe-inline'         = нужно для встроенных <style> и <script> в HTML
+  #                           (в будущем можно убрать, вынеся CSS/JS в отдельные файлы)
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+
+  # HSTS — принудительно HTTPS на 1 год (включи только если у тебя HTTPS домен)
+  # Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+  # Убираем информацию о сервере
+  Server: .
