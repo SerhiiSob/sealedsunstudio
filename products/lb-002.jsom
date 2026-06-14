@@ -1,0 +1,55 @@
+{
+  "id": "LB-001",
+  "category": "wall",
+  "available": true,
+
+  "name": "Arc Wall No.1",
+
+  "photos": [
+    "images/lb-001-a.jpg",
+    "images/lb-001-b.jpg",
+    "images/lb-001-c.jpg"
+  ],
+
+  "badge": {
+    "uk": "Настінний",
+    "en": "Wall"
+  },
+
+  "desc": {
+    "uk": "Настінний бра з дугоподібним кронштейном, металевий плафон-конус, регульований кут нахилу. Матове чорне покриття.",
+    "en": "Wall sconce with arched bracket, metal cone shade, adjustable tilt angle. Matte black finish."
+  },
+
+  "material": {
+    "uk": "Сталь / матовий чорний",
+    "en": "Steel / matte black"
+  },
+
+  "back": {
+    "dimensions": {
+      "uk": "Розміри: 120 × 220 × 180 мм",
+      "en": "Dimensions: 120 × 220 × 180 mm"
+    },
+    "power": {
+      "uk": "Цоколь: E27, макс. 40 Вт",
+      "en": "Socket: E27, max 40W"
+    },
+    "mounting": {
+      "uk": "Монтаж: прихована проводка, пластина 80×80 мм",
+      "en": "Mounting: concealed wiring, 80×80 mm backplate"
+    },
+    "finish": {
+      "uk": "Покриття: порошкова фарба RAL 9005",
+      "en": "Finish: powder coat RAL 9005"
+    },
+    "lead_time": {
+      "uk": "Термін виготовлення: 3–4 тижні",
+      "en": "Lead time: 3–4 weeks"
+    },
+    "note": {
+      "uk": "Можлива зміна кольору та розміру під замовлення.",
+      "en": "Custom colour and size available on request."
+    }
+  }
+}
