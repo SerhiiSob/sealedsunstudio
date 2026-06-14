@@ -1,0 +1,54 @@
+{
+  "id": "LB-007",
+  "category": "wall",
+  "available": true,
+
+  "name": "Назва виробу / Product Name",
+
+  "photos": [
+    "images/lb-007-a.jpg",
+    "images/lb-007-b.jpg"
+  ],
+
+  "badge": {
+    "uk": "Настінний",
+    "en": "Wall"
+  },
+
+  "desc": {
+    "uk": "Короткий опис українською — 1–2 речення.",
+    "en": "Short description in English — 1–2 sentences."
+  },
+
+  "material": {
+    "uk": "Матеріал укр",
+    "en": "Material eng"
+  },
+
+  "back": {
+    "dimensions": {
+      "uk": "Розміри: ШхВхГ мм",
+      "en": "Dimensions: WxHxD mm"
+    },
+    "power": {
+      "uk": "Цоколь: E27, макс. 40 Вт",
+      "en": "Socket: E27, max 40W"
+    },
+    "mounting": {
+      "uk": "Монтаж: опишіть спосіб монтажу",
+      "en": "Mounting: describe installation method"
+    },
+    "finish": {
+      "uk": "Покриття: опишіть покриття",
+      "en": "Finish: describe finish"
+    },
+    "lead_time": {
+      "uk": "Термін виготовлення: X тижнів",
+      "en": "Lead time: X weeks"
+    },
+    "note": {
+      "uk": "Додаткова примітка або умови замовлення.",
+      "en": "Additional note or order conditions."
+    }
+  }
+}
