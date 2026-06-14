@@ -1,4 +1,5 @@
 {
+  "_category_options": "Варіанти для поля category: wall (Настінні), table (Настільні), ceiling (Стельові), floor (Підлогові)"
   "id": "LB-007",
   "category": "wall",
   "available": true,
