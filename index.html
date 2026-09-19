@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sealed Sun Studio — Designer Lighting</title>
+  <!-- <link rel="icon" type="image/png" href="images/logo.png"> -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #EDEBE6;
+      --bg-card:  #F5F3EF;
+      --bg-dark:  #141412;
+      --ink:      #111111;
+      --ink-mid:  #555550;
+      --ink-soft: #999990;
+      --gold:     #C8A96E;
+      --gold-dim: rgba(200,169,110,.18);
+      --line:     rgba(17,17,17,.1);
+      --flip-dur: .5s;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── UTILS ── */
+    .label {
+      font-size: .62rem;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      font-weight: 400;
+    }
+    .label-light { color: rgba(237,235,230,.4); }
+    hr.rule { border: none; border-top: 1px solid var(--line); }
+    hr.rule-light { border: none; border-top: 1px solid rgba(237,235,230,.12); }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2.8rem;
+      border-bottom: 1px solid transparent;
+      transition: background .35s, border-color .35s, backdrop-filter .35s;
+    }
+    nav.scrolled {
+      background: rgba(237,235,230,.92);
+      border-color: var(--line);
+      backdrop-filter: blur(14px);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      letter-spacing: .06em;
+      color: var(--bg);
+      text-decoration: none;
+      transition: color .3s;
+      display: flex; align-items: center; gap: .7rem;
+    }
+    nav.scrolled .nav-logo { color: var(--ink); }
+    .nav-logo span { color: var(--gold); }
+    .nav-logo-img { height: 32px; width: auto; }
+
+    .nav-right { display: flex; align-items: center; gap: 2.4rem; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: .62rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(237,235,230,.55);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    nav.scrolled .nav-links a { color: var(--ink-soft); }
+    .nav-links a:hover { color: var(--gold); }
+
+    .lang-switcher { display: flex; align-items: center; gap: .15rem; }
+    .lang-btn {
+      background: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: .58rem; font-weight: 500;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(237,235,230,.35);
+      padding: .25rem .45rem; transition: color .2s;
+    }
+    nav.scrolled .lang-btn { color: var(--ink-soft); }
+    .lang-btn.active { color: var(--gold); }
+    .lang-sep { font-size: .5rem; color: rgba(237,235,230,.18); }
+    nav.scrolled .lang-sep { color: var(--line); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      background: var(--bg-dark);
+      display: grid;
+      grid-template-rows: 1fr auto;
+      overflow: hidden;
+    }
+
+    /* background photo */
+    .hero-bg-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      opacity: .28;
+    }
+
+    /* dot-grid texture — signature element */
+    .hero-dots {
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 38%; height: 70%;
+      background-image: radial-gradient(circle, rgba(200,169,110,.35) 1px, transparent 1px);
+      background-size: 18px 18px;
+      mask-image: linear-gradient(135deg, transparent 20%, black 60%);
+      -webkit-mask-image: linear-gradient(135deg, transparent 20%, black 60%);
+      pointer-events: none;
+    }
+
+    /* left vertical label */
+    .hero-side-label {
+      position: absolute;
+      left: 2.8rem; top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: center center;
+      font-size: .55rem;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: rgba(237,235,230,.2);
+      white-space: nowrap;
+    }
+
+    .hero-inner {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 9rem 2.8rem 4rem;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .hero-index {
+      font-size: .58rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: rgba(237,235,230,.3);
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.8rem, 9vw, 9rem);
+      font-weight: 300;
+      line-height: .9;
+      letter-spacing: -.01em;
+      color: var(--bg);
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    /* big number accent */
+    .hero-num {
+      position: absolute;
+      right: 2.8rem; top: 50%;
+      transform: translateY(-60%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(7rem, 18vw, 16rem);
+      font-weight: 300;
+      line-height: 1;
+      color: rgba(237,235,230,.06);
+      letter-spacing: -.04em;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-bottom {
+      position: relative;
+      max-width: 1200px; margin: 0 auto; width: 100%;
+      padding: 0 2.8rem 3rem;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 2rem;
+    }
+    .hero-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(237,235,230,.45);
+      max-width: 420px;
+      line-height: 1.5;
+    }
+    .hero-scroll {
+      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+      color: rgba(237,235,230,.25);
+      font-size: .54rem; letter-spacing: .3em; text-transform: uppercase;
+    }
+    .hero-scroll-line {
+      width: 1px; height: 44px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollpulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollpulse {
+      0%,100%{ opacity: .4; transform: scaleY(1); }
+      50%{ opacity: 1; transform: scaleY(1.15); }
+    }
+
+    /* ── PAGE WRAPPER ── */
+    .page { max-width: 1200px; margin: 0 auto; padding: 0 2.8rem; }
+
+    /* ── ABOUT ── */
+    .about-section { padding: 7rem 0; border-bottom: 1px solid var(--line); }
+
+    .about-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 4rem;
+    }
+    .about-header-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem; font-weight: 300;
+      color: rgba(17,17,17,.07);
+      line-height: 1; letter-spacing: -.03em;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .about-visual {
+      position: relative;
+      aspect-ratio: 4/5;
+      background: #222;
+      overflow: hidden;
+    }
+    /* dot pattern on visual */
+    .about-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(200,169,110,.25) 1px, transparent 1px);
+      background-size: 14px 14px;
+      mask-image: linear-gradient(to bottom right, transparent 40%, black 80%);
+      -webkit-mask-image: linear-gradient(to bottom right, transparent 40%, black 80%);
+    }
+    .about-visual-bulb {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .about-visual-bulb svg {
+      width: 90px; stroke: rgba(200,169,110,.2); fill: none; stroke-width: .7;
+    }
+
+    .about-text {}
+    .about-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.05;
+      margin-bottom: 2rem;
+    }
+    .about-name em { font-style: italic; color: var(--gold); }
+    .about-body p {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--ink-mid);
+      font-weight: 300;
+      margin-bottom: 1.2rem;
+    }
+    .about-body p strong { color: var(--ink); font-weight: 500; }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-top: 3rem;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+    .stat {
+      padding: 1.4rem 1.2rem;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem; font-weight: 300;
+      color: var(--ink); line-height: 1;
+      margin-bottom: .3rem;
+    }
+    .stat-label { font-size: .72rem; color: var(--ink-soft); letter-spacing: .08em; }
+
+    /* ── PRODUCTS ── */
+    .products-section { padding: 7rem 0; }
+
+    .section-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      line-height: 1.1;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+    .section-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4.5rem; font-weight: 300;
+      color: rgba(17,17,17,.06);
+      line-height: 1; letter-spacing: -.03em;
+    }
+
+    /* filter */
+    .filter-bar {
+      display: flex; gap: 0;
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .filter-btn {
+      background: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--ink-soft); padding: .75rem 1.4rem;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color .2s, border-color .2s;
+    }
+    .filter-btn.active { color: var(--ink); border-bottom-color: var(--ink); }
+    .filter-btn:hover:not(.active) { color: var(--ink-mid); }
+
+    /* grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1px;
+      background: var(--line);
+    }
+
+    /* card wrap */
+    .card-wrap { background: var(--bg-card); }
+    .card-wrap.hidden { display: none; }
+
+    /* flip */
+    .flip-root { width: 100%; perspective: 1200px; }
+    .flip-inner {
+      position: relative; width: 100%;
+      transform-style: preserve-3d;
+      transition: transform var(--flip-dur) cubic-bezier(.4,.2,.2,1);
+    }
+    .flip-inner.flipped { transform: rotateY(180deg); }
+    .flip-front, .flip-back {
+      width: 100%; height: 100%;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    }
+    .flip-front { display: flex; flex-direction: column; position: relative; z-index: 2; }
+    .flip-back {
+      position: absolute; top: 0; left: 0; z-index: 1;
+      transform: rotateY(180deg);
+      background: var(--bg-dark); color: var(--bg);
+      display: flex; flex-direction: column;
+      padding: 2rem 1.8rem 3.5rem;
+      overflow-y: auto;
+      pointer-events: none;
+    }
+    .flip-inner.flipped .flip-front { pointer-events: none; z-index: 1; }
+    .flip-inner.flipped .flip-back  { pointer-events: auto; z-index: 2; }
+
+    /* flip buttons */
+    .flip-trigger {
+      position: absolute; bottom: .9rem; right: .9rem;
+      width: 30px; height: 30px;
+      background: var(--ink); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--bg); z-index: 20;
+      transition: background .2s;
+    }
+    .flip-trigger:hover { background: var(--gold); }
+    .flip-trigger svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    .flip-back-btn {
+      position: absolute; bottom: .9rem; left: .9rem;
+      width: 30px; height: 30px;
+      background: rgba(237,235,230,.1); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--bg); z-index: 20;
+      transition: background .2s;
+    }
+    .flip-back-btn:hover { background: var(--gold); color: var(--ink); }
+    .flip-back-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* card image */
+    .card-img {
+      aspect-ratio: 3/4; overflow: hidden; position: relative;
+      background: #1a1a18;
+    }
+    .card-slides { display: flex; height: 100%; transition: transform .45s cubic-bezier(.4,0,.2,1); }
+    .card-slide { min-width: 100%; height: 100%; flex-shrink: 0; position: relative; }
+    .card-slide img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s cubic-bezier(.16,1,.3,1); }
+    .flip-front:hover .card-slide img { transform: scale(1.04); }
+
+    .card-placeholder-icon {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: #1a1a18;
+    }
+    .card-placeholder-icon svg {
+      width: 52px; stroke: rgba(200,169,110,.4); fill: none; stroke-width: .8;
+      filter: drop-shadow(0 0 14px rgba(200,169,110,.25));
+    }
+
+    /* slider arrows */
+    .slider-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 30px; height: 30px;
+      background: rgba(20,20,18,.7); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1.1rem; z-index: 10;
+      opacity: 0; transition: opacity .25s;
+    }
+    .slider-arrow.prev { left: 0; }
+    .slider-arrow.next { right: 0; }
+    .flip-front:hover .slider-arrow { opacity: 1; }
+    .slider-arrow:hover { background: var(--gold); color: var(--ink); }
+
+    .slider-dots {
+      position: absolute; bottom: .6rem; left: 50%; transform: translateX(-50%);
+      display: flex; gap: .35rem; z-index: 10;
+    }
+    .slider-dot { width: 4px; height: 4px; background: rgba(255,255,255,.3); transition: background .2s; }
+    .slider-dot.active { background: var(--gold); }
+
+    /* card num & badge */
+    .card-num {
+      position: absolute; top: 0; left: 0;
+      font-size: .68rem; letter-spacing: .18em;
+      color: var(--gold);
+      background: rgba(20,20,18,.75);
+      padding: .3rem .7rem;
+      z-index: 5;
+    }
+    .card-category-badge {
+      position: absolute; top: 0; right: 0;
+      font-size: .6rem; letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(237,235,230,.65);
+      background: rgba(20,20,18,.65);
+      padding: .3rem .7rem;
+      z-index: 5;
+    }
+
+    /* card body */
+    .card-body {
+      padding: 1.3rem 1.6rem 2.8rem;
+      border-top: 1px solid var(--line);
+      position: relative;
+      flex: 1;
+    }
+    .card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 400;
+      color: var(--ink); margin-bottom: .4rem; line-height: 1.1;
+    }
+    .card-desc { font-size: .82rem; line-height: 1.65; color: var(--ink-mid); font-weight: 300; }
+    .card-material {
+      display: inline-block; margin-top: .9rem;
+      font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--gold);
+      border-bottom: 1px solid var(--gold-dim);
+      padding-bottom: .2rem;
+    }
+
+    /* card back */
+    .flip-back-content { flex: 1; display: flex; flex-direction: column; }
+    .flip-back-id { font-size: .62rem; letter-spacing: .25em; color: var(--gold); margin-bottom: .4rem; }
+    .flip-back-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 300; line-height: 1.1;
+      margin-bottom: 1.5rem; color: var(--bg);
+    }
+    .flip-back-rows { flex: 1; display: flex; flex-direction: column; gap: 0; }
+    .flip-back-row {
+      display: flex; flex-direction: column; gap: .15rem;
+      padding: .7rem 0;
+      border-bottom: 1px solid rgba(237,235,230,.08);
+    }
+    .flip-back-row:last-child { border-bottom: none; }
+    .flip-back-key { font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); opacity: .75; }
+    .flip-back-val { font-size: .82rem; line-height: 1.5; color: rgba(237,235,230,.75); font-weight: 300; }
+    .flip-back-note { margin-top: auto; padding-top: .8rem; font-size: .78rem; font-style: italic; color: rgba(237,235,230,.35); line-height: 1.6; }
+
+    /* loading */
+    .grid-loading { text-align: center; padding: 4rem; color: var(--ink-soft); font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; grid-column: 1/-1; background: var(--bg-card); }
+
+    /* ── DIVIDER ── */
+    .divider-section {
+      background: var(--bg-dark);
+      padding: 3.5rem 2.8rem;
+      display: flex; align-items: center; gap: 2.5rem;
+    }
+    .divider-line { flex: 1; height: 1px; background: rgba(237,235,230,.1); }
+    .divider-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-style: italic;
+      color: rgba(237,235,230,.3); letter-spacing: .08em; white-space: nowrap;
+    }
+
+    /* ── SOLD ── */
+    .sold-section { padding: 5rem 0 7rem; }
+    .sold-header { margin-bottom: 2rem; }
+
+    /* monochrome sold grid */
+    .grid-sold .card-img { filter: grayscale(100%); opacity: .5; }
+    .grid-sold .card-name { color: var(--ink-soft); }
+    .grid-sold .card-body { background: var(--bg-card); }
+
+    .sold-badge {
+      position: absolute; top: 0; left: 0;
+      font-size: .58rem; letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(255,255,255,.5); background: rgba(0,0,0,.55);
+      padding: .3rem .7rem; z-index: 5;
+    }
+
+    /* ── CONTACTS ── */
+    .contacts-section {
+      background: var(--bg-dark);
+      padding: 7rem 2.8rem;
+    }
+    .contacts-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6rem; align-items: start;
+    }
+    .contacts-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300; color: var(--bg); line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .contacts-title em { font-style: italic; color: var(--gold); }
+    .contacts-body { font-size: .9rem; line-height: 1.8; color: rgba(237,235,230,.4); font-weight: 300; }
+
+    .contacts-list { list-style: none; }
+    .contact-item {
+      display: flex; align-items: center; gap: 1.4rem;
+      padding: 1.3rem 0;
+      border-bottom: 1px solid rgba(237,235,230,.08);
+      text-decoration: none; color: var(--bg);
+      transition: color .2s;
+    }
+    .contact-item:first-child { border-top: 1px solid rgba(237,235,230,.08); }
+    .contact-item:hover { color: var(--gold); }
+    .contact-icon {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(237,235,230,.15);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: border-color .2s;
+    }
+    .contact-item:hover .contact-icon { border-color: var(--gold); }
+    .contact-icon svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+    .contact-type { font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: .15rem; }
+    .contact-val { font-size: .9rem; font-weight: 300; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0c0c0a;
+      padding: 1.8rem 2.8rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+      border-top: 1px solid rgba(237,235,230,.06);
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; color: rgba(237,235,230,.2); letter-spacing: .08em;
+    }
+    .footer-copy { font-size: .6rem; letter-spacing: .18em; color: rgba(237,235,230,.15); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.4rem; }
+      .nav-links { display: none; }
+      .hero-inner { padding: 8rem 1.4rem 3rem; }
+      .hero-bottom { padding: 0 1.4rem 2.5rem; }
+      .hero-side-label { display: none; }
+      .hero-num { display: none; }
+      .hero-dots { width: 60%; }
+      .page { padding: 0 1.4rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-visual { aspect-ratio: 16/9; }
+      .about-stats { grid-template-columns: repeat(3,1fr); }
+      .contacts-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .contacts-section { padding: 5rem 1.4rem; }
+      footer { padding: 1.5rem 1.4rem; }
+      .divider-section { padding: 2.5rem 1.4rem; }
+      .section-num { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a href="#" class="nav-logo" id="navLogo">
+    <!-- <img class="nav-logo-img" src="images/logo.png" alt="Sealed Sun Studio"> -->
+    Sealed <span>Sun</span> Studio
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about"     data-uk="Про студію"  data-en="About">Про студію</a></li>
+      <li><a href="#available" data-uk="Світильники" data-en="Lights">Світильники</a></li>
+      <li><a href="#sold"      data-uk="Архів"       data-en="Archive">Архів</a></li>
+      <li><a href="#contacts"  data-uk="Контакт"     data-en="Contact">Контакт</a></li>
+    </ul>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="uk">УКР</button>
+      <span class="lang-sep">/</span>
+      <button class="lang-btn" data-lang="en">ENG</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <!-- <img class="hero-bg-img" src="images/hero-bg.jpg" alt=""> -->
+  <div class="hero-dots"></div>
+  <div class="hero-side-label">Sealed Sun Studio — Designer Lighting — Ukraine</div>
+  <div class="hero-num" id="heroNum">06</div>
+
+  <div class="hero-inner">
+    <p class="hero-index label label-light">Studio — 01</p>
+    <!-- <img class="hero-logo-img" id="heroLogo" src="images/logo.png" alt="Sealed Sun Studio"> -->
+    <h1 class="hero-title" id="heroTitle">
+      Sealed<br><em>Sun</em><br>Studio
+    </h1>
+  </div>
+
+  <div class="hero-bottom">
+    <p class="hero-tagline" data-uk="Авторські світильники — об'єкти, що формують простір і залишаються з вами назавжди." data-en="Bespoke lighting — objects that shape space and stay with you forever.">
+      Авторські світильники — об'єкти, що формують простір і залишаються з вами назавжди.
+    </p>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span data-uk="гортати" data-en="scroll">гортати</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── ABOUT ── -->
+<div class="page">
+  <section class="about-section" id="about">
+    <div class="about-header">
+      <span class="label" data-uk="Про студію" data-en="About the studio">Про студію</span>
+      <span class="about-header-num">01</span>
+    </div>
+    <div class="about-grid">
+      <div class="about-visual">
+        <div class="about-visual-bulb">
+          <svg viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="44" r="28"/>
+            <path d="M28 72 Q26 82 26 88 Q26 92 40 92 Q54 92 54 88 Q54 82 52 72"/>
+            <line x1="32" y1="92" x2="32" y2="100"/><line x1="48" y1="92" x2="48" y2="100"/>
+            <line x1="32" y1="100" x2="48" y2="100"/><line x1="40" y1="100" x2="40" y2="108"/>
+            <path d="M33 52 Q36 44 40 48 Q44 52 47 44" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="about-text">
+        <h2 class="about-name">
+          <span data-uk="Світло, що<br><em>формує простір</em>" data-en="Light that<br><em>shapes space</em>">Світло, що<br><em>формує простір</em></span>
+        </h2>
+        <div class="about-body">
+          <p data-uk="Мене звати <strong>Сергій</strong>. Я проєктую та виготовляю авторські світильники — настінні, настільні, стельові та підлогові. Кожен виріб існує в єдиному екземплярі або малій серії." data-en="My name is <strong>Serhii</strong>. I design and handcraft bespoke lighting — wall, table, ceiling and floor fixtures. Every piece exists as a one-off or a small series.">Мене звати <strong>Сергій</strong>. Я проєктую та виготовляю авторські світильники — настінні, настільні, стельові та підлогові. Кожен виріб існує в єдиному екземплярі або малій серії.</p>
+          <p data-uk="Sealed Sun Studio — це перетин <strong>промислового дизайну та ремесла</strong>: метал, скло, бетон, дерево. Матеріали підбираються під характер простору, де буде жити світло." data-en="Sealed Sun Studio sits at the intersection of <strong>industrial design and craft</strong>: metal, glass, concrete, wood. Materials are chosen to match the character of the space where the light will live.">Sealed Sun Studio — це перетин <strong>промислового дизайну та ремесла</strong>: метал, скло, бетон, дерево. Матеріали підбираються під характер простору, де буде жити світло.</p>
+          <p data-uk="Приймаю <strong>індивідуальні замовлення</strong>. Розробляю під ваш інтер'єр від ескізу до готового виробу." data-en="I accept <strong>custom orders</strong> — from sketch to finished piece, designed around your interior.">Приймаю <strong>індивідуальні замовлення</strong>. Розробляю під ваш інтер'єр від ескізу до готового виробу.</p>
+        </div>
+        <div class="about-stats">
+          <div class="stat">
+            <div class="stat-num">1:1</div>
+            <div class="stat-label" data-uk="Кожен виріб унікальний" data-en="Every piece unique">Кожен виріб унікальний</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">4</div>
+            <div class="stat-label" data-uk="Типи монтажу" data-en="Mounting types">Типи монтажу</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">UA</div>
+            <div class="stat-label" data-uk="Зроблено в Україні" data-en="Made in Ukraine">Зроблено в Україні</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRODUCTS ── -->
+  <section class="products-section" id="available">
+    <div class="section-header">
+      <div>
+        <p class="label" style="margin-bottom:.6rem" data-uk="Доступно зараз" data-en="Available now">Доступно зараз</p>
+        <h2 class="section-title"><span data-uk="Актуальні <em>роботи</em>" data-en="Current <em>works</em>">Актуальні <em>роботи</em></span></h2>
+      </div>
+      <span class="section-num">02</span>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all"     data-uk="Усі"       data-en="All">Усі</button>
+      <button class="filter-btn"        data-filter="wall"    data-uk="Настінні"  data-en="Wall">Настінні</button>
+      <button class="filter-btn"        data-filter="table"   data-uk="Настільні" data-en="Table">Настільні</button>
+      <button class="filter-btn"        data-filter="ceiling" data-uk="Стельові"  data-en="Ceiling">Стельові</button>
+      <button class="filter-btn"        data-filter="floor"   data-uk="Підлогові" data-en="Floor">Підлогові</button>
+    </div>
+
+    <div class="grid" id="productsGrid">
+      <div class="grid-loading" data-uk="Завантаження..." data-en="Loading...">Завантаження...</div>
+    </div>
+  </section>
+</div>
+
+<!-- ── DIVIDER ── -->
+<div class="divider-section">
+  <div class="divider-line"></div>
+  <span class="divider-text" data-uk="Sold — знайшло свій простір" data-en="Sold — found its space">Sold — знайшло свій простір</span>
+  <div class="divider-line"></div>
+</div>
+
+<!-- ── SOLD ── -->
+<div class="page">
+  <section class="sold-section" id="sold">
+    <div class="sold-header section-header">
+      <div>
+        <p class="label" style="margin-bottom:.6rem" data-uk="Архів продажів" data-en="Sales archive">Архів продажів</p>
+        <h2 class="section-title"><span data-uk="Знайшли <em>свій дім</em>" data-en="Found their <em>home</em>">Знайшли <em>свій дім</em></span></h2>
+      </div>
+      <span class="section-num">03</span>
+    </div>
+    <div class="grid grid-sold" id="soldGrid">
+      <div class="grid-loading" data-uk="Завантаження..." data-en="Loading...">Завантаження...</div>
+    </div>
+  </section>
+</div>
+
+<!-- ── CONTACTS ── -->
+<section class="contacts-section" id="contacts">
+  <div class="contacts-inner">
+    <div>
+      <p class="label label-light" style="margin-bottom:1.2rem" data-uk="Зв'язатися" data-en="Get in touch">Зв'язатися</p>
+      <h2 class="contacts-title">
+        <span data-uk="Давайте<br><em>поговоримо</em>" data-en="Let's<br><em>talk</em>">Давайте<br><em>поговоримо</em></span>
+      </h2>
+      <p class="contacts-body" data-uk="Приймаю замовлення на авторські світильники. Працюю з приватними клієнтами, архітекторами та дизайнерами інтер'єру." data-en="I accept orders for bespoke lighting. I work with private clients, architects and interior designers.">Приймаю замовлення на авторські світильники. Працюю з приватними клієнтами, архітекторами та дизайнерами інтер'єру.</p>
+    </div>
+    <ul class="contacts-list">
+      <li>
+        <a class="contact-item" href="https://instagram.com/sealedsunsudio" target="_blank" rel="noopener noreferrer">
+          <div class="contact-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg></div>
+          <div><div class="contact-type">Instagram</div><div class="contact-val">@sealedsunsudio</div></div>
+        </a>
+      </li>
+      <li>
+        <a class="contact-item" href="https://t.me/sealedsunsudio" target="_blank" rel="noopener noreferrer">
+          <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M21 5L2 12.5l7 1M21 5l-5 15-4-5.5M21 5L9 13.5m0 0V19l2.5-2.5"/></svg></div>
+          <div><div class="contact-type">Telegram</div><div class="contact-val">@sealedsunsudio</div></div>
+        </a>
+      </li>
+      <li>
+        <a class="contact-item" href="mailto:hello@sealedsunsudio.com">
+          <div class="contact-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></div>
+          <div><div class="contact-type">Email</div><div class="contact-val">hello@sealedsunsudio.com</div></div>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">Sealed Sun Studio</div>
+  <div class="footer-copy" data-uk="© 2025 Sealed Sun Studio — Авторські світильники, Україна" data-en="© 2025 Sealed Sun Studio — Designer Lighting, Ukraine">© 2025 Sealed Sun Studio — Авторські світильники, Україна</div>
+</footer>
+
+<script>
+'use strict';
+
+// ── Security ──
+if (window.self !== window.top) { document.body.innerHTML = ''; }
+
+// ── Nav scroll ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60), { passive: true });
+
+// ── Escape ──
+function escapeHTML(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ── Language ──
+let currentLang = 'uk';
+const langBtns = document.querySelectorAll('.lang-btn');
+
+function applyLang(lang) {
+  currentLang = lang;
+  langBtns.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  document.documentElement.lang = lang === 'uk' ? 'uk' : 'en';
+  document.querySelectorAll('[data-uk][data-en]').forEach(el => {
+    const raw = lang === 'uk' ? el.dataset.uk : el.dataset.en;
+    el.innerHTML = (raw||'').replace(/<(?!\/?(?:em|strong|br)\b)[^>]*>/gi, '');
+  });
+  // dynamic card text
+  ['dyn-desc','dyn-material','dyn-badge','dyn-back-val','dyn-back-note'].forEach(cls => {
+    document.querySelectorAll('.'+cls).forEach(el => {
+      el.textContent = (lang === 'uk' ? el.dataset.uk : el.dataset.en) || '';
+    });
+  });
+  try { localStorage.setItem('lb-lang', lang); } catch(e) {}
+}
+
+langBtns.forEach(btn => btn.addEventListener('click', () => applyLang(btn.dataset.lang)));
+try { const s = localStorage.getItem('lb-lang'); if (s && s !== 'uk') applyLang(s); } catch(e) {}
+
+// ── Filter ──
+const filterBtns = document.querySelectorAll('.filter-btn');
+let activeFilter = 'all';
+function applyFilter() {
+  document.querySelectorAll('#productsGrid .card-wrap').forEach(c => {
+    c.classList.toggle('hidden', activeFilter !== 'all' && c.dataset.category !== activeFilter);
+  });
+}
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    applyFilter();
+  });
+});
+
+// ── Build back ──
+function buildBack(p) {
+  const b = p.back || {};
+  const keys = ['dimensions','power','mounting','finish','lead_time'];
+  const labels = {
+    dimensions: {uk:'Розміри',              en:'Dimensions'},
+    power:      {uk:'Живлення',             en:'Power'},
+    mounting:   {uk:'Монтаж',              en:'Mounting'},
+    finish:     {uk:'Покриття',             en:'Finish'},
+    lead_time:  {uk:'Термін виготовлення',  en:'Lead time'},
+  };
+  let rows = '';
+  keys.forEach(k => {
+    if (!b[k]) return;
+    const ukV = escapeHTML(b[k].uk||''), enV = escapeHTML(b[k].en||'');
+    const ukL = escapeHTML(labels[k].uk),  enL = escapeHTML(labels[k].en);
+    rows += `<div class="flip-back-row">
+      <span class="flip-back-key dyn-back-val" data-uk="${ukL}" data-en="${enL}">${currentLang==='uk'?ukL:enL}</span>
+      <span class="flip-back-val dyn-back-val" data-uk="${ukV}" data-en="${enV}">${currentLang==='uk'?ukV:enV}</span>
+    </div>`;
+  });
+  const noteUk = escapeHTML((b.note||{}).uk||'');
+  const noteEn = escapeHTML((b.note||{}).en||'');
+  const note = (noteUk||noteEn)
+    ? `<p class="flip-back-note dyn-back-note" data-uk="${noteUk}" data-en="${noteEn}">${currentLang==='uk'?noteUk:noteEn}</p>`
+    : '';
+  return `<div class="flip-back-content">
+    <div class="flip-back-id">${escapeHTML(p.id)}</div>
+    <div class="flip-back-name">${escapeHTML(p.name)}</div>
+    <div class="flip-back-rows">${rows}</div>
+    ${note}
+  </div>
+  <button class="flip-back-btn" aria-label="Back">
+    <svg viewBox="0 0 14 14"><path d="M12 7H2M6 2L1 7l5 5"/></svg>
+  </button>`;
+}
+
+// ── Build card ──
+function buildCard(p, isSold) {
+  const safePhotos = (p.photos||[]).filter(ph =>
+    typeof ph==='string' && /^images\/[a-zA-Z0-9_\-]+\.(jpg|jpeg|png|webp|avif)$/.test(ph)
+  );
+  let slidesHTML = '';
+  safePhotos.forEach(ph => {
+    slidesHTML += `<div class="card-slide"><img src="${escapeHTML(ph)}" alt="${escapeHTML(p.name)}" loading="lazy"></div>`;
+  });
+
+  const badgeUk = escapeHTML((p.badge||{}).uk||'');
+  const badgeEn = escapeHTML((p.badge||{}).en||'');
+  const descUk  = escapeHTML((p.desc||{}).uk||'');
+  const descEn  = escapeHTML((p.desc||{}).en||'');
+  const matUk   = escapeHTML((p.material||{}).uk||'');
+  const matEn   = escapeHTML((p.material||{}).en||'');
+
+  const wrap = document.createElement('div');
+  wrap.className = 'card-wrap';
+  if (!isSold) wrap.dataset.category = escapeHTML(p.category||'');
+
+  wrap.innerHTML = `
+    <div class="flip-root">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-img">
+            <span class="card-num">#${escapeHTML(p.id)}</span>
+            ${isSold
+              ? `<span class="sold-badge">Sold</span>`
+              : `<span class="card-category-badge dyn-badge" data-uk="${badgeUk}" data-en="${badgeEn}">${currentLang==='uk'?badgeUk:badgeEn}</span>`
+            }
+            <div class="card-slides">${slidesHTML}</div>
+            <div class="card-placeholder-icon">
+              <svg viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg">
+                <line x1="30" y1="2" x2="30" y2="18"/><circle cx="30" cy="24" r="6"/>
+                <line x1="30" y1="30" x2="30" y2="44"/>
+                <ellipse cx="30" cy="56" rx="22" ry="12"/>
+                <path d="M8 54 Q30 70 52 54"/>
+              </svg>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-name">${escapeHTML(p.name)}</div>
+            <div class="card-desc dyn-desc" data-uk="${descUk}" data-en="${descEn}">${currentLang==='uk'?descUk:descEn}</div>
+            <span class="card-material dyn-material" data-uk="${matUk}" data-en="${matEn}">${currentLang==='uk'?matUk:matEn}</span>
+            <button class="flip-trigger" aria-label="Show details">
+              <svg viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="flip-back">${buildBack(p)}</div>
+      </div>
+    </div>`;
+
+  // slider
+  const cardImg = wrap.querySelector('.card-img');
+  const slides  = cardImg.querySelector('.card-slides');
+  const ph      = cardImg.querySelector('.card-placeholder-icon');
+  const count   = slides.querySelectorAll('.card-slide').length;
+  if (count > 0 && ph) ph.style.display = 'none';
+  if (count > 1) {
+    let cur = 0;
+    const prev = document.createElement('button');
+    prev.className = 'slider-arrow prev'; prev.innerHTML = '&#8249;'; prev.setAttribute('aria-label','Prev');
+    const next = document.createElement('button');
+    next.className = 'slider-arrow next'; next.innerHTML = '&#8250;'; next.setAttribute('aria-label','Next');
+    cardImg.appendChild(prev); cardImg.appendChild(next);
+    const dotsWrap = document.createElement('div'); dotsWrap.className = 'slider-dots';
+    for (let i=0;i<count;i++){const d=document.createElement('div');d.className='slider-dot'+(i===0?' active':'');dotsWrap.appendChild(d);}
+    cardImg.appendChild(dotsWrap);
+    const dots = dotsWrap.querySelectorAll('.slider-dot');
+    function goTo(i){cur=(i+count)%count;slides.style.transform=`translateX(-${cur*100}%)`;dots.forEach((d,j)=>d.classList.toggle('active',j===cur));}
+    prev.addEventListener('click',e=>{e.stopPropagation();goTo(cur-1);});
+    next.addEventListener('click',e=>{e.stopPropagation();goTo(cur+1);});
+    let sx=0;
+    slides.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});
+    slides.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)goTo(dx<0?cur+1:cur-1);});
+  }
+
+  // flip
+  const flipInner   = wrap.querySelector('.flip-inner');
+  const flipTrigger = wrap.querySelector('.flip-trigger');
+  const flipBackBtn = wrap.querySelector('.flip-back-btn');
+  flipTrigger.addEventListener('click', e=>{e.stopPropagation();flipInner.classList.add('flipped');});
+  flipBackBtn.addEventListener('click', e=>{e.stopPropagation();flipInner.classList.remove('flipped');});
+
+  return wrap;
+}
+
+// ── Load products ──
+async function loadProducts() {
+  const grid   = document.getElementById('productsGrid');
+  const soldGr = document.getElementById('soldGrid');
+  try {
+    const idxRes = await fetch('products/index.json');
+    if (!idxRes.ok) throw new Error('index.json not found');
+    const list = await idxRes.json();
+    if (!Array.isArray(list)) throw new Error('bad index');
+    const safe = list.filter(f=>typeof f==='string'&&/^[a-z0-9_\-]+\.json$/.test(f));
+    const results = await Promise.allSettled(safe.map(f=>fetch('products/'+f).then(r=>r.ok?r.json():null)));
+    const available=[], sold=[];
+    results.forEach(r=>{
+      if(r.status!=='fulfilled'||!r.value) return;
+      const p=r.value;
+      if(typeof p.id!=='string'||typeof p.name!=='string') return;
+      (p.available===false?sold:available).push(p);
+    });
+
+    // update hero number
+    const heroNum = document.getElementById('heroNum');
+    if (heroNum) heroNum.textContent = String(available.length).padStart(2,'0');
+
+    grid.innerHTML='';
+    if(!available.length){grid.innerHTML='<div class="grid-loading" data-uk="Незабаром..." data-en="Coming soon...">Незабаром...</div>';}
+    else{available.forEach(p=>grid.appendChild(buildCard(p,false)));}
+
+    soldGr.innerHTML='';
+    if(!sold.length){soldGr.innerHTML='<div class="grid-loading" data-uk="Архів порожній" data-en="Archive is empty">Архів порожній</div>';}
+    else{sold.forEach(p=>soldGr.appendChild(buildCard(p,true)));}
+
+    applyFilter();
+    applyLang(currentLang);
+  } catch(err) {
+    console.warn('Products load error:', err.message);
+    grid.innerHTML='<div class="grid-loading">—</div>';
+    soldGr.innerHTML='<div class="grid-loading">—</div>';
+  }
+}
+
+loadProducts();
+</script>
+</body>
+</html>
