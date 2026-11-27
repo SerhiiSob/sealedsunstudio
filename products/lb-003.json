@@ -1,0 +1,18 @@
+{
+  "id": "LB-003",
+  "category": "floor",
+  "available": false,
+  "name": "Floor Eclipse",
+  "photos": [],
+  "badge": { "uk": "Підлоговий", "en": "Floor" },
+  "desc": { "uk": "Приклад опису виробу. Замініть на свій текст.", "en": "Sample product description. Replace with your own text." },
+  "material": { "uk": "Сталь, скло", "en": "Steel, glass" },
+  "back": {
+    "dimensions": { "uk": "120 × 220 × 180 мм", "en": "120 × 220 × 180 mm" },
+    "power":      { "uk": "E27, макс. 40 Вт",   "en": "E27, max 40W" },
+    "mounting":   { "uk": "Прихована проводка",  "en": "Concealed wiring" },
+    "finish":     { "uk": "Порошкова фарба",     "en": "Powder coat" },
+    "lead_time":  { "uk": "3–4 тижні",           "en": "3–4 weeks" },
+    "note":       { "uk": "Кожен виріб — ручна робота.", "en": "Every piece is handmade." }
+  }
+}
