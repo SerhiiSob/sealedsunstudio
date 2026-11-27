@@ -1,18 +1,48 @@
 {
   "id": "LB-001",
-  "category": "wall",
+  "category": "ceiling",
   "available": true,
   "name": "Arc Wall No.1",
-  "photos": [],
-  "badge": { "uk": "Настінний", "en": "Wall" },
-  "desc": { "uk": "Приклад опису виробу. Замініть на свій текст.", "en": "Sample product description. Replace with your own text." },
-  "material": { "uk": "Сталь, скло", "en": "Steel, glass" },
+  "photos": [
+    "images/lb-001-01.jpg",
+    "images/lb-001-02.jpg"
+  ],
+  "badge": {
+    "uk": "Потолочный",
+    "en": "Ceiling"
+  },
+  "desc": {
+    "uk": "Приклад опису виробу. Замініть на свій текст.",
+    "en": "Sample product description. Replace with your own text."
+  },
+  "material": {
+    "uk": "Сталь, дерево",
+    "en": "Steel, wood"
+  },
   "back": {
-    "dimensions": { "uk": "120 × 220 × 180 мм", "en": "120 × 220 × 180 mm" },
-    "power":      { "uk": "E27, макс. 40 Вт",   "en": "E27, max 40W" },
-    "mounting":   { "uk": "Прихована проводка",  "en": "Concealed wiring" },
-    "finish":     { "uk": "Порошкова фарба",     "en": "Powder coat" },
-    "lead_time":  { "uk": "3–4 тижні",           "en": "3–4 weeks" },
-    "note":       { "uk": "Кожен виріб — ручна робота.", "en": "Every piece is handmade." }
+    "dimensions": {
+      "uk": "1000 × 80 × 100 мм",
+      "en": "1000 × 80 × 100 mm"
+    },
+    "power": {
+      "uk": "DC 220-24v",
+      "en": "DC 220-24v"
+    },
+    "mounting": {
+      "uk": "Прихована проводка",
+      "en": "Concealed wiring"
+    },
+    "finish": {
+      "uk": "Масло",
+      "en": "Butter"
+    },
+    "lead_time": {
+      "uk": "1 тижні",
+      "en": "1 week"
+    },
+    "note": {
+      "uk": "Кожен виріб — ручна робота.",
+      "en": "Every piece is handmade."
+    }
   }
-}
+}\n
